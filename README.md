@@ -1,15 +1,15 @@
-= Faceclone =
+# Faceclone
 
-== Features ==
+## Features
 
 * Publier des messages en public
 * Inscription
 * Devenir ami avec quelqu'un
 * Envoyer un MP à un ami
 
-== MCD ==
+## MCD ##
 
-===Table Membre===
+###Table Membre###
 
 * __ID/nom user unique__
 * Nom
@@ -20,7 +20,7 @@
 * Date d'inscription
 * Date de dernière connexion
 
-=== Table message/Post ===
+### Table message/Post ###
 
 * __ID message__
 * ID membre
@@ -28,21 +28,21 @@
 * Date message
 
 
-=== Commentaires ===
+### Commentaires ###
 
 * __ID Commentaire__
 * ID Membre
 * Contenu commentaire
 * Date commentaire
 
-=== Messages privés ===
+### Messages privés ###
 
 * __ID message__
 * ID conversation
 * Contenu message (markdown pour le formattage)
 * Date message
 
-=== Conversation ===
+### Conversation ###
 
 * __ID conversation__
 * ID membre origine
