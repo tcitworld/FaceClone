@@ -1,0 +1,14 @@
+{
+    "name": "tcit/faceclone",
+    "description": "A basic Facebook Clone",
+    "require": {
+        "twig/twig": "^1.23"
+    },
+    "license": "GPLv3",
+    "authors": [
+        {
+            "name": "Thomas Citharel",
+            "email": "tcit@tcit.fr"
+        }
+    ]
+}

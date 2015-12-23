@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Faceclone</title>
+</head>
+<body>
+	<aside>
+		{% if not connected %}
+		<form action="index.php" method="post">
+			<a href="createaccount.php">Créer un compte</a>
+			<label for="login">E-Mail</label><input name="login" />
+			<label for="password">Mot de passe</label><input name="password" />
+			<button>Entrer</button>
+		</form>	
+		{% else %}
+		Vous êtes connecté
+		<form action="index.php">
+			<label for="msg">Message à dire au monde :</label>
+			<textarea name="msg"></textarea>
+			<input type="submit">
+		</form>
+		{% endif %}
+	</aside>
+
+</body>
+</html>
