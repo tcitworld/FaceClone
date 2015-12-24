@@ -1,26 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Faceclone</title>
-</head>
-<body>
+{% extends "base.twig" %}
+{% block title %}Index{% endblock %}
+{% block content %}
 	<aside>
 		{% if not connected %}
 		<form action="index.php" method="post">
-			<a href="createaccount.php">Créer un compte</a>
-			<label for="login">E-Mail</label><input name="login" />
-			<label for="password">Mot de passe</label><input name="password" />
-			<button>Entrer</button>
+			<label for="login">E-Mail</label><input name="login" /><br>
+			<label for="password">Mot de passe</label><input name="password" /><br>
+			<button>Entrer</button><a href="createaccount.php">Créer un compte</a>
 		</form>	
 		{% else %}
-		Vous êtes connecté
-		<form action="index.php">
-			<label for="msg">Message à dire au monde :</label>
-			<textarea name="msg"></textarea>
-			<input type="submit">
-		</form>
+		<em class="info">Vous êtes connecté.</em>
 		{% endif %}
 	</aside>
-
-</body>
-</html>
+	{% if connected %}
+	<form action="index.php" method="post">
+		<label for="msg">Message à dire au monde (syntaxe markdown) :</label><br>
+		<textarea class="newMessage" name="msg"></textarea><br>
+		<input type="submit">
+	</form>
+	{% for post in posts %}
+	<div>{{ post.contenupost }}<br>{{ post.idmembre }} - {{ post.datemessage }}</div>
+	{% endfor %}
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,8 @@
+nav ul li {
+	display: inline-block;
+}
+
+.newMessage {
+	min-width: 70%;
+	min-height: 5em;
+}

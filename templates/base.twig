@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% block head %}
+	<title>{% block title %}{% endblock %} - Faceclone</title>
+	<link rel="stylesheet" href="templates/style.css">
+	{% endblock %}
+</head>
+<body>
+	<header>
+		<h1><a href="/faceclone">Faceclone</a></h1>
+	</header>
+	{% if connected %}
+	<nav>
+		<ul>
+			<li><a href="friendslist.php">Liste des amis</a></li>
+			<li><a href="mp.php">Messages Privés</a></li>
+			<li><a href="profile.php">Mon Profil</a></li>
+			<li><a href="?logout">Se déconnecter</a></li>
+		</ul>
+	</nav>
+	{% endif %}
+	<div id="content">{% block content %}{% endblock %}</div>
+    <div id="footer">
+        {% block footer %}
+            &copy; Copyright 2011 by tcit.
+        {% endblock %}
+    </div>
+		
+	
+
+</body>
+</html>

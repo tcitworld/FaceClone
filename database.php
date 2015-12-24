@@ -1,4 +1,7 @@
 <?php
+require_once('User.php');
+date_default_timezone_set('Europe/Paris');
+
 
 // pour oracle: $dsn="oci:dbname=//serveur:1521/base
 //$dsn="sqlite:/tmp/base.sqlite"
@@ -51,12 +54,35 @@ class Database {
 		$query->execute(array($login));
 		$donnees = $query->fetch();
 		if (password_verify($pwd,$donnees['password'])) {
-			echo 'mot de passe vérifié';
-			return true;
+			$_SESSION['login'] = $login;
+			return new User($login);
 		} else {
-			echo 'mauvais mot de passe';
 			return false;
 		}
+	}
+
+	public function newMessage($user,$msg) {
+		$query = $this->connexion->prepare('INSERT INTO POST (idmembre, contenupost, datemessage) 
+			VALUES (:user,:msg,:datemessage)');
+		$query->bindParam(':user',$user);
+		$query->bindParam(':msg',$msg);
+		$today = date('Y/m/d h/i/s', time());
+		$query->bindParam(':datemessage',$today);
+		$query->execute();
+
+	}
+
+	public function getUser($login) {
+		$query = $this->connexion->prepare('SELECT * FROM MEMBER WHERE mail = ?');
+		$query->execute(array($login));
+		$donnees = $query->fetch();
+		return $donnees;
+	}
+
+	public function getPostsForUser($userid) {
+		$query = $this->connexion->prepare('SELECT * FROM POST WHERE idmembre = ?');
+		$query->execute(array($userid));
+		return $query->fetchAll();
 	}
 }
 ?>
