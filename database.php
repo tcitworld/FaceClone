@@ -84,5 +84,31 @@ class Database {
 		$query->execute(array($userid));
 		return $query->fetchAll();
 	}
+
+	public function getFriendsForUser($userid) {
+		$query = $this->connexion->prepare('SELECT Friends FROM MEMBER WHERE idmembre = ?');
+		$query->execute(array($userid));
+		return $query->fetch();
+	}
+
+	public function getAllPeople($userid) {
+		$query = $this->connexion->prepare('SELECT * FROM MEMBER WHERE idmembre <> ?');
+		$query->execute(array($userid));
+		return $query->fetchAll();
+	}
+
+	public function setFriends($userid,$friends) {
+		$query = $this->connexion->prepare('UPDATE MEMBER SET Friends = :friends WHERE idmembre = :userid');
+		$query->bindParam(':friends',$friends);
+		$query->bindParam(':userid',$userid);
+		$query->execute();
+	}
+
+	public function getMailForId($userid) {
+		$query = $this->connexion->prepare('SELECT mail FROM MEMBER WHERE idmembre = ?');
+		$query->execute(array($userid));
+		$donnees = $query->fetch();
+		return $donnees;
+	}
 }
 ?>

@@ -1,0 +1,14 @@
+{% extends "base.twig" %}
+{% block title %}Liste d'amis{% endblock %}
+{% block content %}
+<table>
+<tr><th>Nom</th><th>Prénom</th><th>Mail</th><th>Ajouter</th></tr>
+{% for personne in people %}
+	<tr><td>{{ personne.nom }}</td><td>{{ personne.prenom }}</td><td>{{ personne.mail }}</td><td><a href="?adduser={{personne.idmembre}}">L'ajouter !</a></td></tr>
+{% endfor %}
+</table>
+Vos amis :
+{% for ami in friends %}
+{{ ami.mail }}<br>
+{% endfor %}
+{% endblock %}

@@ -1,27 +1,39 @@
 <?php
 
 require_once 'vendor/autoload.php';
+use Aptoma\Twig\Extension\MarkdownExtension;
+use Aptoma\Twig\Extension\MarkdownEngine;
+
+class Tools {
+
+	public static function valider($texte) {
+		if (preg_match('/^[A-Za-z0-9_]+$/',$texte)) {
+			return $texte;
+		} else {
+			die('mauvais logins');
+		}
+	}
+
+	public static function validateDate($date, $format = 'd/m/Y')
+	{
+	    $d = DateTime::createFromFormat($format, $date);
+	    return $d && $d->format($format) == $date;
+	}
+
+	public static function callTwig($file,$vars) {
+
+		$engine = new MarkdownEngine\MichelfMarkdownEngine();
 
 
-function valider ($texte) {
-	if (preg_match('/^[A-Za-z0-9_]+$/',$texte)) {
-		return $texte;
-	} else {
-		die('mauvais logins');
+		$loader = new Twig_Loader_Filesystem(__DIR__ . '/templates/'); // Dossier contenant les templates
+
+		$twig = new Twig_Environment($loader, array('cache' => false,'debug' => true));
+		$twig->addExtension(new Twig_Extension_Debug());
+		$twig->addExtension(new MarkdownExtension($engine));
+		echo $twig->render($file, $vars);
+	}
+
+	public static function isLogged() {
+		return isset($_SESSION['login']);
 	}
 }
-
-function validateDate($date, $format = 'd/m/Y')
-{
-    $d = DateTime::createFromFormat($format, $date);
-    return $d && $d->format($format) == $date;
-}
-
-function callTwig($file,$vars) {
-$loader = new Twig_Loader_Filesystem(__DIR__ . '/templates/'); // Dossier contenant les templates
-
-$twig = new Twig_Environment($loader, array('cache' => false,'debug' => true));
-$twig->addExtension(new Twig_Extension_Debug());
-echo $twig->render($file, $vars);
-}
-?>

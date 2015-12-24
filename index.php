@@ -9,31 +9,30 @@ require_once('User.php');
 $database = new Database;
 $connected = false;
 $posts = array();
-if(!empty($_SESSION['login'])) {
-	$connected = true;
+if (Tools::isLogged()) {
 	$user = new User($_SESSION['login']);
 	$posts = $database->getPostsForUser($user->getid());
 }
 if (isset($_POST['login']) and isset($_POST['password'])) {
 	$user = $database->login($_POST['login'],$_POST['password']);
 	if ($user) {
-		$connected = true;
+		$posts = $database->getPostsForUser($user->getid());
 	}
 }
 
-if(isset($_GET['logout'])) {
+if(isset($_GET['logout']) || empty($_SESSION['login'])) {
 	$_SESSION = array();
 	session_destroy();
 	unset($_SESSION);
-	header('faceclone/');
+
 }
 
-if (isset($_POST['msg']) && $connected) {
+if (isset($_POST['msg']) && Tools::isLogged()) {
 	$database->newMessage($user->getid(),$_POST['msg']);
-	header('faceclone/');
+	$posts = $database->getPostsForUser($user->getid());
 }
 
-callTwig('index.twig',array('connected' => $connected, 'posts' => $posts));
+Tools::callTwig('index.twig',array('connected' => Tools::isLogged(), 'posts' => $posts));
 
 ?>
 

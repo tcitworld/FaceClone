@@ -18,8 +18,8 @@
 		<textarea class="newMessage" name="msg"></textarea><br>
 		<input type="submit">
 	</form>
-	{% for post in posts %}
-	<div>{{ post.contenupost }}<br>{{ post.idmembre }} - {{ post.datemessage }}</div>
+	{% for post in posts | reverse %}
+	<div>{{ post.contenupost | markdown }}<br>{{ post.idmembre }} - {{ post.datemessage }}</div>
 	{% endfor %}
 	{% endif %}
 {% endblock %}
