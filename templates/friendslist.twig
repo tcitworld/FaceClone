@@ -4,11 +4,14 @@
 <table>
 <tr><th>Nom</th><th>Prénom</th><th>Mail</th><th>Ajouter</th></tr>
 {% for personne in people %}
-	<tr><td>{{ personne.nom }}</td><td>{{ personne.prenom }}</td><td>{{ personne.mail }}</td><td><a href="?adduser={{personne.idmembre}}">L'ajouter !</a></td></tr>
+	<tr><td>{{ personne.nom }}</td><td>{{ personne.prenom }}</td><td>{{ personne.mail }}</td><td><a href="?adduser={{personne.id }}">L'ajouter !</a></td></tr>
 {% endfor %}
 </table>
-Vos amis :
+{% if friends is not empty %}
+Vos amis :<br>
 {% for ami in friends %}
-{{ ami.mail }}<br>
+{{ ami.mail }} <a href="?removefriend={{ ami.id }}">Remove friend</a> <br>
 {% endfor %}
+{% endif %}
+<br>
 {% endblock %}

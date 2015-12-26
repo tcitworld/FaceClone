@@ -13,6 +13,7 @@
 		{% endif %}
 	</aside>
 	{% if connected %}
+	Bonjour {{ user.prenom }} {{ user.nom }}
 	<form action="index.php" method="post">
 		<label for="msg">Message à dire au monde (syntaxe markdown) :</label><br>
 		<textarea class="newMessage" name="msg"></textarea><br>

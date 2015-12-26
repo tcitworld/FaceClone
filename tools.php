@@ -36,4 +36,8 @@ class Tools {
 	public static function isLogged() {
 		return isset($_SESSION['login']);
 	}
+
+	public static function sortFunction( $a, $b ) {
+    	return strtotime($a["datemessage"]) - strtotime($b["datemessage"]);
+	}
 }

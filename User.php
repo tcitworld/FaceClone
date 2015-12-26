@@ -10,6 +10,7 @@ class User {
     private $dateNaissance;
     private $dateInscription;
     private $dateLastConnexion; 
+    private $friends;
 
 	function __construct($mail) {
 		$this->email = $mail;
@@ -22,6 +23,7 @@ class User {
 		$this->dateNaissance = $user['dateNaissance'];
 		$this->dateInscription = $user['dateInscription'];
 		$this->dateLastConnexion = $user['dateLastConnexion'];
+		$this->friends = json_decode($user['Friends']);
 	}
 
 	public function getid() {
@@ -54,6 +56,10 @@ class User {
 
 	public function getDateLastConnexion() {
 		return $this->dateLastConnexion;
+	}
+
+	public function getFriends() {
+		return $this->friends;
 	}
 
 }

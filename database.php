@@ -85,14 +85,8 @@ class Database {
 		return $query->fetchAll();
 	}
 
-	public function getFriendsForUser($userid) {
-		$query = $this->connexion->prepare('SELECT Friends FROM MEMBER WHERE idmembre = ?');
-		$query->execute(array($userid));
-		return $query->fetch();
-	}
-
 	public function getAllPeople($userid) {
-		$query = $this->connexion->prepare('SELECT * FROM MEMBER WHERE idmembre <> ?');
+		$query = $this->connexion->prepare('SELECT idmembre FROM MEMBER WHERE idmembre <> ?');
 		$query->execute(array($userid));
 		return $query->fetchAll();
 	}
