@@ -2,10 +2,12 @@
 
 ## Features
 
-* Publier des messages en public
-* Inscription
-* Devenir ami avec quelqu'un
+* Publier des messages en public **Done**
+* Inscription **Done**
+* Devenir ami avec quelqu'un **Done**
 * Envoyer un MP à un ami
+* Créer un commentaire sur une conversation
+* Voir un profil de membre
 
 ## MCD ##
 
