@@ -1,26 +1,79 @@
 {% extends "base.twig" %}
 {% block title %}Index{% endblock %}
 {% block content %}
-	<aside>
 		{% if not connected %}
-		<form action="index.php" method="post">
-			<label for="login">E-Mail</label><input name="login" /><br>
-			<label for="password">Mot de passe</label><input name="password" /><br>
-			<button>Entrer</button><a href="createaccount.php">Créer un compte</a>
-		</form>	
-		{% else %}
-		<em class="info">Vous êtes connecté.</em>
+			{% include online ? '' : 'login.twig' %}
 		{% endif %}
-	</aside>
 	{% if connected %}
-	Bonjour {{ user.prenom }} {{ user.nom }}
-	<form action="index.php" method="post">
-		<label for="msg">Message à dire au monde (syntaxe markdown) :</label><br>
-		<textarea class="newMessage" name="msg"></textarea><br>
-		<input type="submit">
-	</form>
-	{% for post in posts | reverse %}
-	<div>{{ post.contenupost | markdown }}<br>{{ post.idmembre }} - {{ post.datemessage }}</div>
-	{% endfor %}
+	<section class="content-header">
+	<div class="row">
+		<div class="box box-default">
+		{% if newsession %}
+		<div class="alert alert-info alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+			<h4><i class="icon fa fa-info"></i> Bonjour !</h4>
+			Heureux de vous retrouver, {{ user.prenom }} {{ user.nom }}
+		</div>
+		{% endif %}
+		<form action="index.php" method="post">
+			<div class="box col-md-6">
+	        	<div class="box-header">
+					<h3 class="box-title">Quoi de neuf ?</h3>
+				</div>
+				<div class="box-body pad">
+					<textarea class="form-control newMessage" name="msg" placeholder="Entrez votre message ici"></textarea>
+					<button type="submit" class="btn btn-primary btn-md pull-right">Envoyer</button>
+				</div>
+			</div>
+		</form>
+		</div>
+	</div>
+	</section>
+	<section class="content">
+		<div class="row">
+		<div class="col-md-12">
+		{% if posts is not empty %}
+		<div id="activity">
+		{% for post in posts | reverse %}
+				<div class='user-block'>
+	                <img class='img-circle img-bordered-sm' src='{{ post.user.Gravatar }}' alt='user image'>
+	                <span class='username'>
+	                	<a href="profile.php?id={{ post.user.id }}">{{ post.user.prenom }} {{ post.user.nom }}</a>
+	                	<a href='calls/deletepost.php?idpost={{ post.id }}' class='pull-right btn-box-tool'><i class='fa fa-times'></i></a>
+	                </span>
+	                <span class='description'>{{ post.datemessage }}</span>
+                </div><!-- /.user-block -->
+                <div class="box-body">
+                {{ post.contenupost | markdown }}
+                	<button class="btn btn-default btn-xs" href="calls/like.php?idpost={{ post.id }}"><i class="fa fa-thumbs-o-up"></i>Like</button>
+            		{% for like in post.likes | slice(0, 5) %}
+            			<a class="link-blue text-sm" href="profile.php?id={{ like.id }}">{{ like.prenom }} {{ like.nom }}</a>
+            			{% if not loop.last and loop.revindex > 2 %},{% elseif loop.revindex == 2 %} et{% endif %}
+            		{% endfor %}
+            		<span class="text-sm">
+            			{% if post.likes | length == 1 %}aime{% elseif post.likes | length > 1 %}aiment{% endif %}
+            		</span>
+                </div>
+           	<div class="box-footer box-comments">
+           		{% for comment in post.comments %}
+           		<div class="box-comment">
+           			<span class="username">{{ comment.membre.prenom }} {{ comment.membre.nom }}</span>
+	           		<div class="comment-text">
+	           			{{ comment.contenu }}
+	           		</div>
+           		</div>
+           		{% endfor %}
+           	</div>
+		{% endfor %}
+		</div>
+		{% else %}
+		<div class="callout callout-warning">
+            <h4>Ce flux d'activités est bien vide !</h4>
+            <p>Vous n'avez pas encore de flux d'activité car ni vous ni vos amis n'avez posté quelque chose.</p>
+      	</div>
+		{% endif %}
+		</div>
+		</div>
+	</section>
 	{% endif %}
 {% endblock %}

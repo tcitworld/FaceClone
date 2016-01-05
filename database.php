@@ -1,5 +1,6 @@
 <?php
-require_once('User.php');
+require_once('global.php');
+
 date_default_timezone_set('Europe/Paris');
 
 
@@ -66,7 +67,7 @@ class Database {
 			VALUES (:user,:msg,:datemessage)');
 		$query->bindParam(':user',$user);
 		$query->bindParam(':msg',$msg);
-		$today = date('Y/m/d h/i/s', time());
+		$today = date('Y/m/d H/i/s', time());
 		$query->bindParam(':datemessage',$today);
 		$query->execute();
 
@@ -104,5 +105,110 @@ class Database {
 		$donnees = $query->fetch();
 		return $donnees;
 	}
+
+	public function getPost($idpost) {
+		$query = $this->connexion->prepare('SELECT * FROM POST WHERE idpost = ?');
+		$query->execute(array($idpost));
+		$donnees = $query->fetch();
+		return $donnees;
+	}
+
+	public function deletePost($idpost) {
+		$query = $this->connexion->prepare('DELETE FROM POST WHERE idpost = ?');
+		$query->execute(array($idpost));
+	}
+
+	public function getConversationsForUser($userid) {
+		$query = $this->connexion->prepare('SELECT idconversation FROM PARTICIPENT WHERE idmembre = ?');
+		$query->execute(array($userid));
+		$donnees = $query->fetchAll();
+		return $donnees;
+	}
+
+	public function getFullConversationByID($idconversation) {
+		$query = $this->connexion->prepare('SELECT * FROM MP WHERE idconversation = ?');
+		$query->execute(array($idconversation));
+		$donnees = $query->fetchAll();
+		return $donnees;
+	}
+
+	public function getConversationByID($idconversation) {
+		$query = $this->connexion->prepare('SELECT * FROM PARTICIPENT WHERE idconversation = ?');
+		$query->execute(array($idconversation));
+		$donnees = $query->fetchAll();
+		return $donnees;
+	}
+
+	public function newMP($userid,$idconversation,$contenump) {
+		$query = $this->connexion->prepare('INSERT INTO MP (idconversation, idmembre, contenump, datemp) 
+			VALUES (:idconversation,:idmembre,:contenump,:datemp)');
+		$query->bindParam(':idconversation',$idconversation);
+		$query->bindParam(':idmembre',$userid);
+		$query->bindParam(':contenump',$contenump);
+		$today = date('Y/m/d H/i/s', time());
+		$query->bindParam(':datemp',$today);
+		$query->execute();	
+	}
+
+	public function getConversationDest($userid, $idconversation) {
+		$query = $this->connexion->prepare('SELECT idmembre FROM PARTICIPENT WHERE idconversation = ? AND idmembre <> ?');
+		$query->execute(array($idconversation,$userid));
+		$donnees = $query->fetch();
+		return $donnees;
+	}
+
+	public function changeConversationReadStatus($idconversation,$userid,$status) {
+		$query = $this->connexion->prepare('UPDATE PARTICIPENT SET markread = :status
+			WHERE idconversation = :idconversation AND idmembre = :idmembre');
+		$query->bindParam(':idconversation',$idconversation);
+		$query->bindParam(':idmembre',$userid);
+		$query->bindParam(':status',$status);
+		$query->execute();
+	}
+
+	public function getConversationReadStatus($idconversation,$idmembre) {
+		$query = $this->connexion->prepare('SELECT markread FROM PARTICIPENT WHERE idconversation = ? AND idmembre = ?');
+		$query->execute(array($idconversation,$idmembre));
+		$donnees = $query->fetch();
+		return $donnees[0];
+	}
+
+	public function newConversation($titre) {
+		$query = $this->connexion->prepare('INSERT INTO CONVERSATIONS (titre) VALUES (:titre)');
+		$query->bindParam(':titre',$titre);
+		$query->execute();
+		return $this->connexion->lastInsertId();
+	}
+
+	public function addMPParticipants($idconversation,$userid,$readstatus) {
+		$query = $this->connexion->prepare('INSERT INTO PARTICIPENT (idconversation,idmembre,markread) 
+			VALUES (:idconversation, :idmembre, :markread)');
+		$query->bindParam(':idconversation',$idconversation);
+		$query->bindParam(':idmembre',$userid);
+		$query->bindParam(':markread',$readstatus);
+		$query->execute();
+	}
+
+	public function likePost($idconversation,$userid) {
+		$query = $this->connexion->prepare('INSERT INTO LIKES (idconversation,idmembre) 
+			VALUES (:idconversation, :idmembre)');
+		$query->bindParam(':idconversation',$idconversation);
+		$query->bindParam(':idmembre',$userid);
+		$query->execute();
+	}
+
+	public function getLikes($idpost) {
+		$query = $this->connexion->prepare('SELECT idmembre FROM LIKES WHERE idpost = ?');
+		$query->execute(array($idpost));
+		$donnees = $query->fetchAll();
+		return $donnees;
+	}
+
+	public function getComments($idpost) {
+		$query = $this->connexion->prepare('SELECT * FROM COMMENT WHERE idpost = ?');
+		$query->execute(array($idpost));
+		$donnees = $query->fetchAll();
+		return $donnees;
+	}	
 }
 ?>

@@ -1,6 +1,5 @@
 <?php
-require_once('database.php');
-require_once('tools.php');
+require_once('global.php');
 
 date_default_timezone_set('Europe/Paris');
 $database = new Database();

@@ -1,18 +1,48 @@
 {% extends "base.twig" %}
 {% block title %}Créer un nouveau compte{% endblock %}
 {% block content %}
-<form action="createaccount.php" method="post" accept-charset="utf-8">
-	<label for="email">Email : </label><input type="email" name="email" value="" placeholder=""><br>
+<div class="register-box">
+<div class="register-logo">
+        <a href="index.php"><b>Faceclone</b></a>
+</div>
+<div class="register-box-body">
+	<p class="login-box-msg">Register a new membership</p>
+	<form action="createaccount.php" method="post" accept-charset="utf-8">
+		<div class="form-group has-feedback">
+			<input type="email" name="email" class="form-control" placeholder="Email">
+			<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+		</div>
+		<div class="form-group has-feedback">
+			<input type="text" class="form-control" name="nom" placeholder="Nom">
+			<span class="glyphicon glyphicon-user form-control-feedback"></span>
+		</div>
 
-	<label for="nom">Nom : </label><input type="text" name="nom" value="" placeholder=""><br>
+		<div class="form-group has-feedback">
+			<input type="text" class="form-control" name="prenom" placeholder="Prénom">
+			<span class="glyphicon glyphicon-user form-control-feedback"></span>
+		</div>
 
-	<label for="prenom">Prenom : </label><input type="text" name="prenom" value="" placeholder=""><br>
+		<div class="form-group has-feedback">
+			<input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask name="birth" placeholder="JJ/MM/AAAA" pattern="(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[012]).[0-9]{4}">
+			<span class="glyphicon glyphicon-calendar form-control-feedback"></span>
+		</div>
 
-	<label for="birth">Date de naissance</label><input type="date" name="birth" 
-	placeholder="JJ/MM/AAAA" pattern="(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[012]).[0-9]{4}"><br>
+		<div class="form-group has-feedback">
+			<input name="pwd" class="form-control" type="password" class="form-control" placeholder="Password">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+		</div>
 
-	<label for="pwd">Mot de passe</label><input type="password" name="pwd"><br>
-	<button type="submit">Envoyer</button>
+
+	<button class="btn btn-primary btn-block btn-flat" type="submit">Envoyer</button>
 </form>
 <a href="index.php">Retour au site</a>
+</div>
+<script src="templates/AdminLTE/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="templates/AdminLTE/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="templates/AdminLTE/plugins/input-mask/jquery.inputmask.extensions.js"></script><script>
+$(function () {
+//Datemask dd/mm/yyyy
+$("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+});
+    </script>
 {% endblock %}

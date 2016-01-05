@@ -3,31 +3,168 @@
 <head>
 	{% block head %}
 	<title>{% block title %}{% endblock %} - Faceclone</title>
-	<link rel="stylesheet" href="templates/style.css">
+
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="templates/AdminLTE/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="templates/AdminLTE/dist/css/AdminLTE.min.css">
+
+    <link rel="stylesheet" href="templates/AdminLTE/plugins/select2/select2.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="templates/AdminLTE/dist/css/skins/_all-skins.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
 	{% endblock %}
 </head>
-<body>
-	<header>
-		<h1><a href="/faceclone">Faceclone</a></h1>
-	</header>
-	{% if connected %}
-	<nav>
-		<ul>
-			<li><a href="friendslist.php">Liste des amis</a></li>
-			<li><a href="mp.php">Messages Privés</a></li>
-			<li><a href="profile.php">Mon Profil</a></li>
-			<li><a href="index.php?logout">Se déconnecter</a></li>
-		</ul>
-	</nav>
-	{% endif %}
-	<div id="content">{% block content %}{% endblock %}</div>
+<body class="skin-blue layout-top-nav">
+	<header class="main-header row">
+  <a href="index.php" class="logo">
+    <span class="logo-mini"><b>F</b>C</span>
+    <span class="logo-lg">Face<b>Clone</b></span>
+    <!-- LOGO -->
+  </a>
+  <!-- Header Navbar: style can be found in header.less -->
+  <nav class="navbar navbar-static-top" role="navigation" style="position:static">
+    <!-- Navbar Right Menu -->
+    {% if connected %}
+
+    <div class="navbar-custom-menu">
+      <ul class="nav navbar-nav">
+        <!-- Messages: style can be found in dropdown.less-->
+        <li class="dropdown messages-menu">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-envelope-o"></i>
+            <span class="label label-danger">{{ user.unreadconversations | length >= 1 ? user.unreadconversations | length }}</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="header">
+            {% if user.UnreadConversations | length == 1 %}
+            Vous avez un nouveau message
+            {% elseif user.UnreadConversations | length == 0 %}
+            Vous n'avez pas de nouveau message
+            {% else %}
+            Vous avez {{user.UnreadConversations | length }} nouveaux messages 
+            {% endif %}
+             </li>
+            <li>
+              <!-- inner menu: contains the actual data -->
+              <ul class="menu">
+              {% for conversation in user.conversations | slice(0, 5) | reverse %}
+                <li {{ conversation.readstatus ? 'class="bg-gray-active color-palette"' }}><!-- start message -->
+                  <a href="detailmp.php?mpid={{ conversation.idconversation }}">
+                    <div class="pull-left">
+                      <img src="{{ (conversation.membres | first).gravatar }}">
+                    </div>
+                    <h4>
+                      {{ (conversation.membres | first).prenom }} 
+                      {{ (conversation.membres | first).nom }}{% if conversation.membres|length > 1 %} et {{ conversation.membres|length > 2 ? ((conversation.membres|length - 1) ~  ' autres...') : 'un autre'}}{% endif %}
+
+                      <small><i class="fa fa-clock-o"></i>{{ conversation.lastmessage.datemp }}</small>
+                    </h4>
+                    <p>{{ conversation.lastmessage.contenump }}</p>
+                  </a>
+                </li><!-- end message -->
+              {% endfor %}
+              </ul>
+            </li>
+            <li class="footer"><a href="mp.php">Tous les messages privés</a></li>
+          </ul>
+        </li>
+        <!-- Notifications: style can be found in dropdown.less -->
+        <li class="dropdown notifications-menu">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-bell-o"></i>
+            <span class="label label-warning">10</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="header">You have 10 notifications</li>
+            <li>
+              <!-- inner menu: contains the actual data -->
+              <ul class="menu">
+                <li>
+                  <a href="#">
+                    <i class="ion ion-ios-people info"></i> Notification title
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="footer"><a href="#">View all</a></li>
+          </ul>
+        </li>
+        <!-- User Account: style can be found in dropdown.less -->
+        <li class="dropdown user user-menu">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <img src="{{ user.Gravatar }}" class="user-image" alt="User Image">
+            <span class="hidden-xs">{{ user.prenom }} {{ user.nom }}</span>
+          </a>
+          <ul class="dropdown-menu">
+            <!-- User image -->
+            <li class="user-header">
+              <img src="{{ user.Gravatar }}" class="img-circle" alt="User Image">
+              <p>
+                {{ user.prenom }} {{ user.nom }} - Web Developer
+                <small>Member since {{ user.dateinscription }}</small>
+              </p>
+            </li>
+            <!-- Menu Body -->
+            <li class="user-body">
+              <div class="col-md-4 text-center">
+                <a href="#">Followers</a>
+              </div>
+              <div class="col-md-8 text-center">
+                <a href="friendslist.php">Liste des amis</a>
+              </div>
+            </li>
+            <!-- Menu Footer-->
+            <li class="user-footer">
+              <div class="pull-left">
+                <a class="btn btn-default btn-flat" href="profile.php">Mon Profil</a>
+              </div>
+              <div class="pull-right">
+              	<a href="index.php?logout" class="btn btn-default btn-flat">Se déconnecter</a>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    {% endif %}
+  </nav>
+</header>
+<div class="content-wrapper">
+	{% block content %}{% endblock %}
+</div>
     <div id="footer">
         {% block footer %}
-            &copy; Copyright 2011 by tcit.
+            &copy; Copyright 2015 by tcit.
         {% endblock %}
     </div>
-		
-	
+
+
+<!-- jQuery 2.1.4 -->
+    <script src="templates/AdminLTE/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="templates/AdminLTE/bootstrap/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="templates/AdminLTE/plugins/fastclick/fastclick.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="templates/AdminLTE/dist/js/app.min.js"></script>	
+	<script src="templates/AdminLTE/plugins/select2/select2.full.min.js"></script>
+<script type="text/javascript">
+  $(".select2").select2();
+</script>
 
 </body>
 </html>

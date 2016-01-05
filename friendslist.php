@@ -1,9 +1,7 @@
 <?php
 session_start();
-require_once('database.php');
-require_once('tools.php');
-require_once 'vendor/autoload.php';
-require_once('User.php');
+require_once('global.php');
+
 
 $database = new Database();
 if (Tools::isLogged()) {
@@ -26,7 +24,7 @@ if (isset($_GET['removefriend'])) {
 		$database->setFriends($user->getid(),json_encode($friends));
 }
 
-Tools::callTwig('friendslist.twig',array('connected' => Tools::isLogged(),
+Tools::callTwig('friendslist.twig',array('connected' => Tools::isLogged(), 'user' => $user,
  'friends' => callFriends($database,$user,$friends), 'people' => callAllPeople($database,$user,$people,$friends)));
 
 function callFriends($database,$user,$friends) {
