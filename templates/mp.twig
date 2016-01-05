@@ -1,0 +1,40 @@
+{% extends "base.twig" %}
+{% block title %}Messages privés{% endblock %}
+{% block content %}
+<div class="box">
+<div class="box-header">
+<h3 class="box-title">Liste de messages privés</h3>
+<a href="newmp.php"><button class="glyphicon glyphicon-plus btn btn-primary btn-xs"></button></a>
+</div>
+<div class="box-body">
+<div class="table-responsive mailbox-messages">
+<table class="table table-hover table-striped">
+<tbody>
+{% for conversation in conversations | reverse %}
+<tr>
+	<td class="mailbox-star">
+		<img class="img-circle" src="{{ (conversation.membres |first).gravatar }}" alt="User Image">
+	</td>
+	<td class="mailbox-name">
+		<a href="detailmp.php?mpid={{ conversation.IDConversation }}">
+			{% for membre in conversation.membres %}
+			    {{ membre.prenom }} {{ membre.nom }}{% if not loop.last and loop.revindex > 2 %},{% elseif loop.revindex == 2 %} et{% endif %}
+			{% endfor %}
+		</a>
+	</td>
+	<td class="mailbox-subject">
+		<a href="detailmp.php?mpid={{ conversation.IDConversation }}">
+		{{ conversation.readstatus ? '<strong>'}}
+			{{ conversation.lastmessage.contenump }}
+		{{ conversation.readstatus ? '</strong>'}}
+		</a>
+	</td>
+	<td class="mailbox-date">{{ conversation.lastmessage.datemp }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+{% endblock %}

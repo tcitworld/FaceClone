@@ -1,0 +1,49 @@
+{% extends "base.twig" %}
+{% block title %}Message privé{% endblock %}
+{% block content %}
+{% set altern = true %}
+<div class="box box-primary box-solid direct-chat direct-chat-primary">
+<a href="mp.php">Retour à la liste des messages privés</a>
+<div class="box-header">
+	<h3 class="box-title">Message privé avec 
+	{% for membre in conversationinfo.Membres %}
+	    	{{ membre.prenom }} {{ membre.nom }}{% if not loop.last and loop.revindex > 2 %},{% elseif loop.revindex == 2 %} et{% endif %}
+	{% endfor %}
+	</h3>
+</div>
+<div class="box-body">
+<div class="" id="chat">
+{% for message in conversation %}
+{% if message.membre.id == user.id %}
+<div class="direct-chat-msg">
+{% else %}
+<div class="direct-chat-msg right">
+{% endif %}
+<div class="direct-chat-info clearfix">
+	<span class="direct-chat-name pull-{{message.membre.id == user.id ? 'left' : 'right'}}">{{ message.membre.prenom }} {{ message.membre.nom }}</span>
+	<span class="direct-chat-timestamp pull-{{message.membre.id == user.id ? 'right' : 'left'}}">{{ message.datemp }}</span>
+</div>
+<img src="{{ message.membre.gravatar }}" alt="message user image" class="direct-chat-img">
+<div class="direct-chat-text">
+	{{ message.contenu }}
+</div>
+</div>
+{% endfor %}
+</div>
+<div class="box-footer">
+	<form action="detailmp.php?mpid={{ conversationinfo.IDConversation }}" method="post">
+		<div class="input-group">
+			<input name="mpcontenu" placeholder="Ecrivez votre message ici" class="form-control" type="text">
+			<span class="input-group-btn">
+				<button type="submit" class="btn btn-warning btn-flat">Envoyer</button>
+			</span>
+		</div>
+	</form>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+	var objDiv = document.getElementById("chat");
+	objDiv.scrollTop = objDiv.scrollHeight;
+</script>
+{% endblock %}
