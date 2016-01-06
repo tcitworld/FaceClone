@@ -8,3 +8,4 @@ require_once('database.php');
 require_once('Conversation.php');
 require_once('Message.php');
 require_once('Comment.php');
+require_once('Attachment.php');

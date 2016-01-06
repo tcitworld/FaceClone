@@ -8,6 +8,7 @@ if (Tools::isLogged()) {
 }
 
 $friendj = $user->getFriends();
+$friends = array();
 foreach ($friendj as $friend) {
 	$friends[] = new User($database->getMailForId($friend)[0]);
 }

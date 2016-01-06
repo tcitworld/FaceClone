@@ -10,6 +10,7 @@ class Post {
 	private $user;
 	private $likes;
 	private $comments;
+	private $attachment;
 
 	function __construct($idpost) {
 		$this->idpost = $idpost;
@@ -19,6 +20,7 @@ class Post {
 		$this->user = new User($this->database->getMailForId($this->idmembre)[0]);
 		$this->contenupost = $post['contenupost'];
 		$this->datemessage = $post['datemessage'];
+		$this->attachment = new Attachment($post['attachment']);
 		$peopleliking = $this->database->getLikes($this->idpost);
 		foreach ($peopleliking as $people) {
 			$this->likes[] = new User($this->database->getMailForId($people['idmembre'])[0]);
@@ -51,5 +53,9 @@ class Post {
 
 	public function getComments() {
 		return $this->comments;
+	}
+
+	public function getAttachment() {
+		return $this->attachment;
 	}
 }

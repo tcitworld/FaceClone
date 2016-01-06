@@ -29,7 +29,8 @@ if(isset($_GET['logout']) || empty($_SESSION['login'])) {
 }
 
 if (isset($_POST['msg']) && Tools::isLogged()) {
-	$database->newMessage($user->getid(),$_POST['msg']);
+	$attachment = new Attachment(Tools::getURL($_POST['msg']));
+	$database->newMessage($user->getid(),$_POST['msg'],$attachment->getUrl());
 	$posts = getPosts($database,$user);
 }
 
@@ -44,6 +45,7 @@ function getPosts($database,$user) {
 			$posts = array_merge($posts,$database->getPostsForUser($friend));
 		}
 	}
+	$postobj = array();
 	foreach ($posts as $post) {
 		$postobj[] = new Post($post['idpost']);
 	}

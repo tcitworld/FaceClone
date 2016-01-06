@@ -62,11 +62,12 @@ class Database {
 		}
 	}
 
-	public function newMessage($user,$msg) {
-		$query = $this->connexion->prepare('INSERT INTO POST (idmembre, contenupost, datemessage) 
-			VALUES (:user,:msg,:datemessage)');
+	public function newMessage($user,$msg,$attachment) {
+		$query = $this->connexion->prepare('INSERT INTO POST (idmembre, contenupost, datemessage,attachment) 
+			VALUES (:user,:msg,:datemessage,:attachment)');
 		$query->bindParam(':user',$user);
 		$query->bindParam(':msg',$msg);
+		$query->bindParam(':attachment',$attachment);
 		$today = date('Y/m/d H/i/s', time());
 		$query->bindParam(':datemessage',$today);
 		$query->execute();
@@ -209,6 +210,24 @@ class Database {
 		$query->execute(array($idpost));
 		$donnees = $query->fetchAll();
 		return $donnees;
-	}	
+	}
+
+	public function setAttachment ($url,$summary,$title,$picture = NULL) {
+		$query = $this->connexion->prepare('INSERT INTO ATTACHMENT (url,title,summary,picture) 
+			VALUES (:url, :title, :summary, :picture)');
+		$query->bindParam(':url',$url);
+		$query->bindParam(':title',$title);
+		$query->bindParam(':summary',$summary);
+		$query->bindParam(':picture',$picture);
+		$query->execute();
+	}
+
+
+	public function getAttachment($url) {
+		$query = $this->connexion->prepare('SELECT * FROM ATTACHMENT WHERE url = ?');
+		$query->execute(array($url));
+		$donnees = $query->fetch();
+		return $donnees;
+	}
 }
 ?>

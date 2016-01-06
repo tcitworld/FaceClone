@@ -3,6 +3,8 @@
 require_once('global.php');
 use Aptoma\Twig\Extension\MarkdownExtension;
 use Aptoma\Twig\Extension\MarkdownEngine;
+use Graby\Graby;
+
 
 class Tools {
 
@@ -30,6 +32,7 @@ class Tools {
 		$twig = new Twig_Environment($loader, array('cache' => false,'debug' => true));
 		$twig->addExtension(new Twig_Extension_Debug());
 		$twig->addExtension(new MarkdownExtension($engine));
+		$twig->addExtension(new AutoLinkTwigExtension());
 		echo $twig->render($file, $vars);
 	}
 
@@ -52,5 +55,44 @@ class Tools {
         $url .= ' />';
     }
     return $url;
-	} 
+	}
+
+	public static function getURL($string) {
+        preg_match_all('#\bhttps?://[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))#', $string, $match);
+        if (count($match[0]) > 0) {
+			return $match[0][0];
+		} else {
+			return false;
+		}
+	}
+
+	public static function fetchURL ($url) {
+		$graby = new Graby();
+		try {
+			$r = $graby->fetchContent($url);
+			return $r;
+		} catch (Exception $e) {
+		}
+	}
+}
+
+class AutoLinkTwigExtension extends \Twig_Extension
+{
+
+    public function getFilters()
+    {
+        return array('auto_link_text' => new \Twig_Filter_Method($this, 'auto_link_text', array('is_safe' => array('html'))),
+        );
+    }
+
+    public function getName()
+    {
+        return "auto_link_twig_extension";
+    }
+
+    static public function auto_link_text($string)
+    {
+
+        return autolink($string);
+    }
 }

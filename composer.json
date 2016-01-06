@@ -4,7 +4,9 @@
     "require": {
         "twig/twig": "^1.23",
         "aptoma/twig-markdown": "^2.0",
-        "michelf/php-markdown": "~1.3"
+        "michelf/php-markdown": "~1.3",
+        "j0k3r/graby": "^1.0",
+        "iamcal/lib_autolink": "^1.7"
     },
     "license": "GPLv3",
     "authors": [

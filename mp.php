@@ -26,6 +26,7 @@ Tools::callTwig('mp.twig',array('connected' => Tools::isLogged(),'user' => $user
 	'conversations' => getConversations($conversations,$user)));
 
 function getConversations($conversations,$user) {
+	$mpsobj = array();
 	foreach ($conversations as $conversation) {
 		$mpsobj[] = new Conversation($conversation['idconversation'],$user);
 	}
