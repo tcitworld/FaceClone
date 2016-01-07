@@ -49,7 +49,7 @@
 	            </div>
                 <div class="box-body">
                 {{ post.contenupost | auto_link_text | markdown }}
-                {% if post.attachment is not empty %}
+                {% if post.attachment.url != null %}
 	                <div class="attachment-block clearfix">
 	                	{% if post.attachment.picture != '' %}<img class="attachment-img" src="{{ post.attachment.picture }}">{% endif %}
 	                	<div {{ post.attachment.picture != '' ? 'class="attachment-pushed"' }}>

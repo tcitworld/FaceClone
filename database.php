@@ -100,6 +100,25 @@ class Database {
 		$query->execute();
 	}
 
+	public function setFriendRequest($userid,$friend) {
+		$query = $this->connexion->prepare('INSERT INTO ASKFRIEND (user, friend) 
+			VALUES (:user,:friend)');
+		$query->bindParam(':user',$userid);
+		$query->bindParam(':friend',$friend);
+		$query->execute();
+	}
+
+	public function getFriendRequests($userid) {
+		$query = $this->connexion->prepare('SELECT user FROM ASKFRIEND WHERE friend = ?');
+		$query->execute(array($userid));
+		return $query->fetchAll();
+	}
+
+	public function deleteFriendRequest($userid,$friend) {
+		$query = $this->connexion->prepare('DELETE FROM ASKFRIEND WHERE user = ? AND friend = ?');
+		$query->execute(array($userid,$friend));
+	}
+
 	public function getMailForId($userid) {
 		$query = $this->connexion->prepare('SELECT mail FROM MEMBER WHERE idmembre = ?');
 		$query->execute(array($userid));

@@ -3,6 +3,26 @@
 {% block content %}
 	<div class="box">
 	<div class="box-header">
+	<h3 class="box-title">Liste de demandes d'ami</h3>
+	</div>
+	<div class="box-body">
+	{% if asks is not empty %}
+		<table class="table table-condensed">
+			<tbody>
+			<tr><th>Nom</th><th>Prénom</th><th>Mail</th><th>Accepter</th></tr>
+			{% for demand in asks %}
+				<tr><td>{{ demand.user.nom }}</td><td>{{ demand.user.prenom }}</td><td>{{ demand.user.mail }}</td><td><a href="?accept={{ demand.user.id }}">Accepter la demande d'ami</a></td></tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+		Vous n'avez pas de nouvelle demande d'ami.
+	{% endif %}
+	</div>
+	</div>
+
+	<div class="box">
+	<div class="box-header">
 	<h3 class="box-title">Liste de personnes inscrites</h3>
 	</div>
 	<div class="box-body">
@@ -11,7 +31,7 @@
 			<tbody>
 			<tr><th>Nom</th><th>Prénom</th><th>Mail</th><th>Ajouter</th></tr>
 			{% for personne in people %}
-				<tr><td>{{ personne.nom }}</td><td>{{ personne.prenom }}</td><td>{{ personne.mail }}</td><td><a href="?adduser={{personne.id }}">L'ajouter !</a></td></tr>
+				<tr><td>{{ personne.nom }}</td><td>{{ personne.prenom }}</td><td>{{ personne.mail }}</td><td><a href="?adduser={{personne.id }}">Envoyer une demande d'ami !</a></td></tr>
 			{% endfor %}
 			</tbody>
 			</table>

@@ -6,16 +6,16 @@
     	<div class="col-md-3">
     		<div class="box box-primary">
                 <div class="box-body box-profile">
-                  <img class="profile-user-img img-responsive img-circle" src="{{ user.Gravatar }}" alt="User profile picture">
-                  <h3 class="profile-username text-center">{{ user.prenom }} {{ user.nom }}</h3>
+                  <img class="profile-user-img img-responsive img-circle" src="{{ userp.Gravatar }}" alt="User profile picture">
+                  <h3 class="profile-username text-center">{{ userp.prenom }} {{ userp.nom }}</h3>
                   <p class="text-muted text-center">Software Engineer</p>
 
                   <ul class="list-group list-group-unbordered">
                     <li class="list-group-item">
-                      <b>Amis</b> <a class="pull-right">{{ user.NumberOfFriends }}</a>
+                      <b>Amis</b> <a class="pull-right">{{ userpNumberOfFriends }}</a>
                     </li>
                     <li class="list-group-item">
-                    	<b>Posts</b> <a class="pull-right">{{ user.NumberOfPosts }}</a>
+                    	<b>Posts</b> <a class="pull-right">{{ userp.NumberOfPosts }}</a>
                     </li>
                   </ul>
 
@@ -61,9 +61,9 @@
             	<!-- Post -->
                     <div class="post clearfix">
                       <div class='user-block'>
-                        <img class='img-circle img-bordered-sm' src='{{ user.Gravatar }}' alt='user image'>
+                        <img class='img-circle img-bordered-sm' src='{{ userp.Gravatar }}' alt='user image'>
                         <span class='username'>
-                          <a href="#">{{ user.prenom }} {{ user.nom }}</a>
+                          <a href="#">{{ userp.prenom }} {{ userp.nom }}</a>
                           <a href='calls/deletepost.php?idpost={{ post.idpost }}' class='pull-right btn-box-tool'><i class='fa fa-times'></i></a>
                         </span>
                         <span class='description'>{{ post.datemessage }}</span>
