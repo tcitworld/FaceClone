@@ -23,6 +23,26 @@
 
 	<div class="box">
 	<div class="box-header">
+	<h3 class="box-title">Liste de personnes auxquelles vous avez envoyé une demande d'amitié</h3>
+	</div>
+	<div class="box-body">
+	{% if ownasks is not empty %}
+		<table class="table table-condensed">
+			<tbody>
+			<tr><th>Nom</th><th>Prénom</th><th>Mail</th><th>Annuler</th></tr>
+			{% for demand in ownasks %}
+				<tr><td>{{ demand.friend.nom }}</td><td>{{ demand.friend.prenom }}</td><td>{{ demand.friend.mail }}</td><td><a href="?cancel={{ demand.friend.id }}">Annuler la demande</a></td></tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+		Vous n'avez pas de demande d'ami pas encore acceptée.
+	{% endif %}
+	</div>
+	</div>
+
+	<div class="box">
+	<div class="box-header">
 	<h3 class="box-title">Liste de personnes inscrites</h3>
 	</div>
 	<div class="box-body">

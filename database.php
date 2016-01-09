@@ -22,6 +22,12 @@ class Database {
 		}
 	}
 
+/*
+
+	Member-related functions
+
+*/
+
 	public function createMember($nom,$prenom,$email,$birth,$password) {
 		$query = $this->connexion->prepare('INSERT INTO MEMBER (nom, prenom, mail, dateNaissance, password, dateInscription, dateLastConnexion) 
 			VALUES (:nom,:prenom,:email,:birth,:password, :dateInscription, :dateInscription)');
@@ -62,6 +68,33 @@ class Database {
 		}
 	}
 
+	public function getUser($login) {
+		$query = $this->connexion->prepare('SELECT * FROM MEMBER WHERE mail = ?');
+		$query->execute(array($login));
+		$donnees = $query->fetch();
+		return $donnees;
+	}
+
+	public function getAllPeople($userid) {
+		$query = $this->connexion->prepare('SELECT idmembre FROM MEMBER WHERE idmembre <> ?');
+		$query->execute(array($userid));
+		return $query->fetchAll();
+	}
+
+	public function getMailForId($userid) {
+		$query = $this->connexion->prepare('SELECT mail FROM MEMBER WHERE idmembre = ?');
+		$query->execute(array($userid));
+		$donnees = $query->fetch();
+		return $donnees;
+	}
+
+	/*
+
+
+	Posts-related functions
+
+	*/
+
 	public function newMessage($user,$msg,$attachment) {
 		$query = $this->connexion->prepare('INSERT INTO POST (idmembre, contenupost, datemessage,attachment) 
 			VALUES (:user,:msg,:datemessage,:attachment)');
@@ -74,24 +107,88 @@ class Database {
 
 	}
 
-	public function getUser($login) {
-		$query = $this->connexion->prepare('SELECT * FROM MEMBER WHERE mail = ?');
-		$query->execute(array($login));
-		$donnees = $query->fetch();
-		return $donnees;
-	}
-
 	public function getPostsForUser($userid) {
 		$query = $this->connexion->prepare('SELECT * FROM POST WHERE idmembre = ?');
 		$query->execute(array($userid));
 		return $query->fetchAll();
 	}
 
-	public function getAllPeople($userid) {
-		$query = $this->connexion->prepare('SELECT idmembre FROM MEMBER WHERE idmembre <> ?');
-		$query->execute(array($userid));
-		return $query->fetchAll();
+	public function getPost($idpost) {
+		$query = $this->connexion->prepare('SELECT * FROM POST WHERE idpost = ?');
+		$query->execute(array($idpost));
+		$donnees = $query->fetch();
+		return $donnees;
 	}
+
+	public function deletePost($idpost) {
+		$query = $this->connexion->prepare('DELETE FROM POST WHERE idpost = ?');
+		$query->execute(array($idpost));
+	}
+
+
+	/*
+	
+	Likes
+
+	*/
+
+	public function likePost($idconversation,$userid) {
+		$query = $this->connexion->prepare('INSERT INTO LIKES (idconversation,idmembre) 
+			VALUES (:idconversation, :idmembre)');
+		$query->bindParam(':idconversation',$idconversation);
+		$query->bindParam(':idmembre',$userid);
+		$query->execute();
+	}
+
+	public function getLikes($idpost) {
+		$query = $this->connexion->prepare('SELECT idmembre FROM LIKES WHERE idpost = ?');
+		$query->execute(array($idpost));
+		$donnees = $query->fetchAll();
+		return $donnees;
+	}
+
+	/*
+	
+	Comments
+
+	*/
+
+	public function getComments($idpost) {
+		$query = $this->connexion->prepare('SELECT * FROM COMMENT WHERE idpost = ?');
+		$query->execute(array($idpost));
+		$donnees = $query->fetchAll();
+		return $donnees;
+	}
+
+	/*
+
+	Embeed-URLs
+
+	*/
+
+	public function setAttachment ($url,$summary,$title,$picture = NULL) {
+		$query = $this->connexion->prepare('INSERT INTO ATTACHMENT (url,title,summary,picture) 
+			VALUES (:url, :title, :summary, :picture)');
+		$query->bindParam(':url',$url);
+		$query->bindParam(':title',$title);
+		$query->bindParam(':summary',$summary);
+		$query->bindParam(':picture',$picture);
+		$query->execute();
+	}
+
+
+	public function getAttachment($url) {
+		$query = $this->connexion->prepare('SELECT * FROM ATTACHMENT WHERE url = ?');
+		$query->execute(array($url));
+		$donnees = $query->fetch();
+		return $donnees;
+	}
+
+	/*
+	
+	Friends-related functions
+
+	*/
 
 	public function setFriends($userid,$friends) {
 		$query = $this->connexion->prepare('UPDATE MEMBER SET Friends = :friends WHERE idmembre = :userid');
@@ -114,29 +211,23 @@ class Database {
 		return $query->fetchAll();
 	}
 
+	public function getOwnFriendRequests($userid) {
+		$query = $this->connexion->prepare('SELECT friend FROM ASKFRIEND WHERE user = ?');
+		$query->execute(array($userid));
+		return $query->fetchAll();
+	}
+
 	public function deleteFriendRequest($userid,$friend) {
 		$query = $this->connexion->prepare('DELETE FROM ASKFRIEND WHERE user = ? AND friend = ?');
 		$query->execute(array($userid,$friend));
 	}
 
-	public function getMailForId($userid) {
-		$query = $this->connexion->prepare('SELECT mail FROM MEMBER WHERE idmembre = ?');
-		$query->execute(array($userid));
-		$donnees = $query->fetch();
-		return $donnees;
-	}
+	/*
+	
+	Private Message-related functions
 
-	public function getPost($idpost) {
-		$query = $this->connexion->prepare('SELECT * FROM POST WHERE idpost = ?');
-		$query->execute(array($idpost));
-		$donnees = $query->fetch();
-		return $donnees;
-	}
-
-	public function deletePost($idpost) {
-		$query = $this->connexion->prepare('DELETE FROM POST WHERE idpost = ?');
-		$query->execute(array($idpost));
-	}
+	*/
+	
 
 	public function getConversationsForUser($userid) {
 		$query = $this->connexion->prepare('SELECT idconversation FROM PARTICIPENT WHERE idmembre = ?');
@@ -209,44 +300,5 @@ class Database {
 		$query->execute();
 	}
 
-	public function likePost($idconversation,$userid) {
-		$query = $this->connexion->prepare('INSERT INTO LIKES (idconversation,idmembre) 
-			VALUES (:idconversation, :idmembre)');
-		$query->bindParam(':idconversation',$idconversation);
-		$query->bindParam(':idmembre',$userid);
-		$query->execute();
-	}
-
-	public function getLikes($idpost) {
-		$query = $this->connexion->prepare('SELECT idmembre FROM LIKES WHERE idpost = ?');
-		$query->execute(array($idpost));
-		$donnees = $query->fetchAll();
-		return $donnees;
-	}
-
-	public function getComments($idpost) {
-		$query = $this->connexion->prepare('SELECT * FROM COMMENT WHERE idpost = ?');
-		$query->execute(array($idpost));
-		$donnees = $query->fetchAll();
-		return $donnees;
-	}
-
-	public function setAttachment ($url,$summary,$title,$picture = NULL) {
-		$query = $this->connexion->prepare('INSERT INTO ATTACHMENT (url,title,summary,picture) 
-			VALUES (:url, :title, :summary, :picture)');
-		$query->bindParam(':url',$url);
-		$query->bindParam(':title',$title);
-		$query->bindParam(':summary',$summary);
-		$query->bindParam(':picture',$picture);
-		$query->execute();
-	}
-
-
-	public function getAttachment($url) {
-		$query = $this->connexion->prepare('SELECT * FROM ATTACHMENT WHERE url = ?');
-		$query->execute(array($url));
-		$donnees = $query->fetch();
-		return $donnees;
-	}
 }
 ?>

@@ -5,6 +5,7 @@ require_once('global.php');
 $database = new Database;
 if (Tools::isLogged()) {
 	$user = new User($_SESSION['login']);
+	$userp = $user;
 	$posts = $database->getPostsForUser($user->getid());
 	
 }

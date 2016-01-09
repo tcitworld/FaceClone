@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.15
+-- version 4.5.3.1
 -- http://www.phpmyadmin.net
 --
--- Client :  servinfo-db
--- Généré le :  Jeu 07 Janvier 2016 à 09:56
--- Version du serveur :  5.5.46-MariaDB-1ubuntu0.14.04.2
--- Version de PHP :  5.6.4-4ubuntu6.2
+-- Client :  localhost
+-- Généré le :  Sam 09 Janvier 2016 à 17:12
+-- Version du serveur :  10.1.10-MariaDB-log
+-- Version de PHP :  7.0.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 -- Structure de la table `ASKFRIEND`
 --
 
-CREATE TABLE IF NOT EXISTS `ASKFRIEND` (
+CREATE TABLE `ASKFRIEND` (
   `user` int(11) NOT NULL,
   `friend` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `ASKFRIEND` (
 --
 
 INSERT INTO `ASKFRIEND` (`user`, `friend`) VALUES
-(29, 32);
+(29, 31);
 
 -- --------------------------------------------------------
 
@@ -44,7 +44,7 @@ INSERT INTO `ASKFRIEND` (`user`, `friend`) VALUES
 -- Structure de la table `ATTACHMENT`
 --
 
-CREATE TABLE IF NOT EXISTS `ATTACHMENT` (
+CREATE TABLE `ATTACHMENT` (
   `url` varchar(255) NOT NULL,
   `title` text,
   `summary` text,
@@ -56,9 +56,9 @@ CREATE TABLE IF NOT EXISTS `ATTACHMENT` (
 --
 
 INSERT INTO `ATTACHMENT` (`url`, `title`, `summary`, `picture`) VALUES
-('http://twig.sensiolabs.org/doc/filters/raw.html', 'raw - Documentation - Twig', 'The raw filter marks the value as being "safe", which means that in an environment with automatic escaping enabled this variable will not be escaped if raw is the last filter applied to it: {% autoescape %} {{ var|raw }} {# var won''t be escaped #} {% endautoescape %} Note Be careful when using the &hellip;', NULL),
+('http://twig.sensiolabs.org/doc/filters/raw.html', 'raw - Documentation - Twig', 'The raw filter marks the value as being "safe", which means that in an environment with automatic escaping enabled this variable will not be escaped if raw is the last filter applied to it: {% autoescape %} {{ var|raw }} {# var won\'t be escaped #} {% endautoescape %} Note Be careful when using the &hellip;', NULL),
 ('http://www.lemouvementcommun.fr/les-communs-la-vrai-idee-revolutionnaire/', 'Le mouvement commun » « Les communs, la vrai idée révolutionnaire »', 'Pourtant mentionnés dans le code civil, ces biens dont « l’usage est commun à tous » auraient pu disparaître si la crise du système néo-libéral ne les avait remises au goût du jour. Biens communs, ou communs, voilà un concept nouveau, à l’intersection des sciences politiques et de l’économie. Un concept à la mode, qui génère moult &hellip;', 'http://www.lemouvementcommun.fr/wp-content/uploads/2015/12/MARIANNE_LOGO.png'),
-('https://github.com/j0k3r/graby', 'j0k3r/graby', 'README.md Graby helps you extract article content from web pages. This is a fork of Full-Text RSS v3.3 from @fivefilters . Why this fork ? Full-Text RSS works great as a standalone application. But when you need to encapsulate it in your own library it''s a mess. You need this kind of ugly thing: $article &hellip;', 'https://avatars1.githubusercontent.com/u/62333?v=3&s=400');
+('https://github.com/j0k3r/graby', 'j0k3r/graby', 'README.md Graby helps you extract article content from web pages. This is a fork of Full-Text RSS v3.3 from @fivefilters . Why this fork ? Full-Text RSS works great as a standalone application. But when you need to encapsulate it in your own library it\'s a mess. You need this kind of ugly thing: $article &hellip;', 'https://avatars1.githubusercontent.com/u/62333?v=3&s=400');
 
 -- --------------------------------------------------------
 
@@ -66,13 +66,13 @@ INSERT INTO `ATTACHMENT` (`url`, `title`, `summary`, `picture`) VALUES
 -- Structure de la table `CARNET`
 --
 
-CREATE TABLE IF NOT EXISTS `CARNET` (
+CREATE TABLE `CARNET` (
   `ID` int(11) NOT NULL,
   `NOM` varchar(30) DEFAULT NULL,
   `PRENOM` varchar(30) DEFAULT NULL,
   `NAISSANCE` date DEFAULT NULL,
   `VILLE` varchar(30) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `CARNET`
@@ -95,13 +95,13 @@ INSERT INTO `CARNET` (`ID`, `NOM`, `PRENOM`, `NAISSANCE`, `VILLE`) VALUES
 -- Structure de la table `COMMENT`
 --
 
-CREATE TABLE IF NOT EXISTS `COMMENT` (
+CREATE TABLE `COMMENT` (
   `idcomment` int(11) NOT NULL,
   `idmembre` int(11) DEFAULT NULL,
   `idpost` int(11) DEFAULT NULL,
   `contenucomment` text,
   `datecommentaire` date DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `COMMENT`
@@ -116,10 +116,10 @@ INSERT INTO `COMMENT` (`idcomment`, `idmembre`, `idpost`, `contenucomment`, `dat
 -- Structure de la table `CONVERSATIONS`
 --
 
-CREATE TABLE IF NOT EXISTS `CONVERSATIONS` (
+CREATE TABLE `CONVERSATIONS` (
   `identifiant` int(11) NOT NULL,
   `titre` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `CONVERSATIONS`
@@ -138,7 +138,7 @@ INSERT INTO `CONVERSATIONS` (`identifiant`, `titre`) VALUES
 -- Structure de la table `LIKES`
 --
 
-CREATE TABLE IF NOT EXISTS `LIKES` (
+CREATE TABLE `LIKES` (
   `idpost` int(11) NOT NULL,
   `idmembre` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -159,7 +159,7 @@ INSERT INTO `LIKES` (`idpost`, `idmembre`) VALUES
 -- Structure de la table `MEMBER`
 --
 
-CREATE TABLE IF NOT EXISTS `MEMBER` (
+CREATE TABLE `MEMBER` (
   `idmembre` int(11) NOT NULL,
   `nom` varchar(100) DEFAULT NULL,
   `prenom` varchar(100) DEFAULT NULL,
@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `MEMBER` (
   `dateInscription` date DEFAULT NULL,
   `dateLastConnexion` date DEFAULT NULL,
   `Friends` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `MEMBER`
@@ -187,13 +187,13 @@ INSERT INTO `MEMBER` (`idmembre`, `nom`, `prenom`, `mail`, `dateNaissance`, `pas
 -- Structure de la table `MP`
 --
 
-CREATE TABLE IF NOT EXISTS `MP` (
+CREATE TABLE `MP` (
   `idmp` int(11) NOT NULL,
   `idconversation` int(11) DEFAULT NULL,
   `idmembre` int(11) DEFAULT NULL,
   `contenump` text,
   `datemp` date DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `MP`
@@ -225,7 +225,7 @@ INSERT INTO `MP` (`idmp`, `idconversation`, `idmembre`, `contenump`, `datemp`) V
 -- Structure de la table `PARTICIPENT`
 --
 
-CREATE TABLE IF NOT EXISTS `PARTICIPENT` (
+CREATE TABLE `PARTICIPENT` (
   `idconversation` int(11) NOT NULL,
   `idmembre` int(11) NOT NULL,
   `markread` tinyint(1) NOT NULL DEFAULT '0'
@@ -256,13 +256,13 @@ INSERT INTO `PARTICIPENT` (`idconversation`, `idmembre`, `markread`) VALUES
 -- Structure de la table `POST`
 --
 
-CREATE TABLE IF NOT EXISTS `POST` (
+CREATE TABLE `POST` (
   `idpost` int(11) NOT NULL,
   `idmembre` int(11) DEFAULT NULL,
   `contenupost` text,
   `datemessage` datetime DEFAULT NULL,
   `attachment` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `POST`
@@ -278,7 +278,7 @@ INSERT INTO `POST` (`idpost`, `idmembre`, `contenupost`, `datemessage`, `attachm
 (21, 29, 'un autre', '2015-12-29 03:06:16', NULL),
 (22, 29, 'un bon', '2015-12-29 15:07:51', NULL),
 (28, 33, 'toto\r\n', '2015-12-29 15:25:02', NULL),
-(29, 29, 'J''ai utilisé https://github.com/j0k3r/graby surtout', '2016-01-05 23:06:15', 'https://github.com/j0k3r/graby'),
+(29, 29, 'J\'ai utilisé https://github.com/j0k3r/graby surtout', '2016-01-05 23:06:15', 'https://github.com/j0k3r/graby'),
 (45, 29, 'http://twig.sensiolabs.org/doc/filters/raw.html', '2016-01-06 21:23:36', 'http://twig.sensiolabs.org/doc/filters/raw.html');
 
 --
@@ -365,32 +365,32 @@ ALTER TABLE `POST`
 -- AUTO_INCREMENT pour la table `CARNET`
 --
 ALTER TABLE `CARNET`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT pour la table `COMMENT`
 --
 ALTER TABLE `COMMENT`
-  MODIFY `idcomment` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `idcomment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `CONVERSATIONS`
 --
 ALTER TABLE `CONVERSATIONS`
-  MODIFY `identifiant` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `identifiant` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT pour la table `MEMBER`
 --
 ALTER TABLE `MEMBER`
-  MODIFY `idmembre` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=34;
+  MODIFY `idmembre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT pour la table `MP`
 --
 ALTER TABLE `MP`
-  MODIFY `idmp` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
+  MODIFY `idmp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 --
 -- AUTO_INCREMENT pour la table `POST`
 --
 ALTER TABLE `POST`
-  MODIFY `idpost` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=46;
+  MODIFY `idpost` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 --
 -- Contraintes pour les tables exportées
 --
