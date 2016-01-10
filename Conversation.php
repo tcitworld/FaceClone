@@ -10,6 +10,11 @@ class Conversation{
 	function __construct($conversation,$user) {
 		$this->idconversation = $conversation;
 		$this->database = new Database;
+		/*
+
+		Convert id $members from database to proper User objects 
+		
+		*/
 		$members = $this->database->getConversationByID($conversation);
 		foreach ($members as $member) {
 			if ($member['idmembre'] != $user->getid()) {

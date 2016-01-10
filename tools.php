@@ -8,6 +8,12 @@ use Graby\Graby;
 
 class Tools {
 
+	/*
+	
+	TODO : Remove or change, because it doesn't accept accents
+
+	*/
+
 	public static function valider($texte) {
 		if (preg_match('/^[A-Za-z0-9_]+$/',$texte)) {
 			return $texte;
@@ -22,6 +28,10 @@ class Tools {
 	    return $d && $d->format($format) == $date;
 	}
 
+	/*
+		Handles the Template Engine calls
+	*/
+
 	public static function callTwig($file,$vars) {
 
 		$engine = new MarkdownEngine\MichelfMarkdownEngine();
@@ -30,19 +40,25 @@ class Tools {
 		$loader = new Twig_Loader_Filesystem(__DIR__ . '/templates/'); // Dossier contenant les templates
 
 		$twig = new Twig_Environment($loader, array('cache' => false,'debug' => true));
-		$twig->addExtension(new Twig_Extension_Debug());
-		$twig->addExtension(new MarkdownExtension($engine));
-		$twig->addExtension(new AutoLinkTwigExtension());
+		$twig->addExtension(new Twig_Extension_Debug()); // for debugging
+		$twig->addExtension(new MarkdownExtension($engine)); // for markdown <3
+		$twig->addExtension(new AutoLinkTwigExtension()); // for autolinking, see on bottom of the page
 		echo $twig->render($file, $vars);
 	}
 
-	public static function isLogged() {
+	public static function isLogged() { // check if user is logged
 		return isset($_SESSION['login']);
 	}
 
 	public static function sortFunction( $a, $b ) {
-    	return strtotime($a->getDateMessage()) - strtotime($b->getDateMessage());
+    	return strtotime($a->getDateMessage()) - strtotime($b->getDateMessage()); // to sort posts according to date
 	}
+
+	/*
+
+		Fetching an avatar from Gravatar
+
+	*/
 
 	public static function get_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = array() ) {
     $url = 'http://www.gravatar.com/avatar/';
@@ -57,6 +73,12 @@ class Tools {
     return $url;
 	}
 
+	/*
+	
+	Parsing content to get an URL inside
+
+	*/
+
 	public static function getURL($string) {
         preg_match_all('#\bhttps?://[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))#', $string, $match);
         if (count($match[0]) > 0) {
@@ -65,6 +87,13 @@ class Tools {
 			return false;
 		}
 	}
+
+	/*
+
+	Fetching informations about the URL
+	<3 j0k3r
+
+	*/
 
 	public static function fetchURL ($url) {
 		$graby = new Graby();
@@ -75,6 +104,12 @@ class Tools {
 		}
 	}
 }
+
+/*
+
+Uses lib_autolink to create a Twig Extension to parse text and automatically create <a> markup on links.
+
+*/
 
 class AutoLinkTwigExtension extends \Twig_Extension
 {

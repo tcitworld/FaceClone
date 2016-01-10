@@ -336,6 +336,15 @@ class Database {
 		return $donnees;
 	}
 
+	/*
+
+	function newMP : insert a new MP inside a conversation
+	@param int $userid
+	@param int $idconversation
+	@param str $contenump
+	
+	*/
+
 	public function newMP($userid,$idconversation,$contenump) {
 		$query = $this->connexion->prepare('INSERT INTO MP (idconversation, idmembre, contenump, datemp) 
 			VALUES (:idconversation,:idmembre,:contenump,:datemp)');
@@ -359,7 +368,7 @@ class Database {
 	public function getConversationDest($userid, $idconversation) {
 		$query = $this->connexion->prepare('SELECT idmembre FROM PARTICIPENT WHERE idconversation = ? AND idmembre <> ?');
 		$query->execute(array($idconversation,$userid));
-		$donnees = $query->fetch();
+		$donnees = $query->fetchAll();
 		return $donnees;
 	}
 
@@ -397,7 +406,15 @@ class Database {
 		return $donnees[0];
 	}
 
-	public function newConversation($titre) {
+	/*
+
+	function newConversation : create a new conversation and return its id
+	@param str $titre le titre de la conversation 
+	@return id
+
+	*/
+
+	public function newConversation($titre = NULL) {
 		$query = $this->connexion->prepare('INSERT INTO CONVERSATIONS (titre) VALUES (:titre)');
 		$query->bindParam(':titre',$titre);
 		$query->execute();

@@ -5,12 +5,12 @@ require_once('global.php');
 $database = new Database;
 if (Tools::isLogged()) {
 	$user = new User($_SESSION['login']);
-	$userp = $user;
+	$userp = $user; // we are looking at our own profile
 	$posts = $database->getPostsForUser($user->getid());
 	
 }
 
-if (isset($_GET['id'])) {
+if (isset($_GET['id'])) { // we are looking at someone's profile
 	$userp = new User($database->getMailForId($_GET['id'])[0]);
 	$posts = $database->getPostsForUser($user->getid());
 }

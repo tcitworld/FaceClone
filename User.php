@@ -25,7 +25,7 @@ class User {
 		$this->dateNaissance = $user['dateNaissance'];
 		$this->dateInscription = $user['dateInscription'];
 		$this->dateLastConnexion = $user['dateLastConnexion'];
-		$this->friends = json_decode($user['Friends']);
+		$this->friends = json_decode($user['Friends']); // decode the list of friends in database to an array
 		$this->conversations = $this->database->getConversationsForUser($this->id);
 	}
 
@@ -62,7 +62,7 @@ class User {
 	}
 
 	public function getFriends() {
-		return ($this->friends ? $this->friends : false);
+		return ($this->friends ? $this->friends : false); // if no friends, return false
 	}
 
 	public function getNumberOfFriends() {
@@ -74,10 +74,10 @@ class User {
 	}
 
 	public function getGravatar() {
-		return Tools::get_gravatar($this->email);
+		return Tools::get_gravatar($this->email); // get gravatar for a given email
 	}
 
-	public function getConversations() {
+	public function getConversations() { // return proper Conversation objects
 		$conv = $this->conversations;
 		foreach ($conv as $conversation) {
 			$convobj[] = new Conversation($conversation['idconversation'],$this);
@@ -85,11 +85,11 @@ class User {
 		return $convobj;
 	}
 
-	public function getUnreadConversations() {
+	public function getUnreadConversations() { 
 		$conv = $this->getConversations();
 		$conv2 = array();
 		foreach ($conv as $con) {
-			if ($con->getReadStatus() == '1') {
+			if ($con->getReadStatus() == '1') { // return only unread conversations
 				$conv2[]=$con;
 			}
 		}

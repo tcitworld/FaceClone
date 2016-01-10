@@ -21,10 +21,20 @@ class Post {
 		$this->contenupost = $post['contenupost'];
 		$this->datemessage = $post['datemessage'];
 		$this->attachment = new Attachment($post['attachment']);
+		/*
+		
+		Convert id $peopleliking from database to proper User objects 
+		
+		*/
 		$peopleliking = $this->database->getLikes($this->idpost);
 		foreach ($peopleliking as $people) {
 			$this->likes[] = new User($this->database->getMailForId($people['idmembre'])[0]);
 		}
+		/*
+		
+		Convert id $comments from database to proper Comments objects 
+		
+		*/
 		$comments = $this->database->getComments($this->idpost);
 		foreach ($comments as $comment) {
 			$this->comments[] = new Comment($comment);
