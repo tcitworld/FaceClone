@@ -16,6 +16,7 @@ if (isset($_POST['login']) and isset($_POST['password'])) {
 	$user = $database->login($_POST['login'],$_POST['password']);
 	$newsession = true;
 	if ($user) {
+		$_SESSION['login'] = $_POST['login'];
 		$posts = getPosts($database,$user);
 	}
 }
