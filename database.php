@@ -83,7 +83,7 @@ class Database {
 	}
 
 	public function getAllPeople($userid) {
-		$query = $this->connexion->prepare('SELECT idmembre FROM MEMBER WHERE idmembre <> ?');
+		$query = $this->connexion->prepare('SELECT MEMBER.idmembre FROM MEMBER WHERE idmembre <> ?');
 		$query->execute(array($userid));
 		return $query->fetchAll();
 	}

@@ -79,6 +79,7 @@ class User {
 
 	public function getConversations() { // return proper Conversation objects
 		$conv = $this->conversations;
+		$convobj = array();
 		foreach ($conv as $conversation) {
 			$convobj[] = new Conversation($conversation['idconversation'],$this);
 		}
