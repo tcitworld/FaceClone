@@ -5,12 +5,14 @@ class Comment{
 	private $membre;
 	private $database;
 	private $contenucomment;
+	private $datecomment;
 
 	function __construct($comment) {
 		$this->idcomment = $comment['idcomment'];
 		$this->database = new Database;
 		$this->membre = new User($this->database->getMailForId($comment['idmembre'])[0]);
 		$this->contenucomment = $comment['contenucomment'];
+		$this->datecomment = $comment['datecommentaire'];
 	}
 
 	/*
@@ -44,6 +46,10 @@ class Comment{
 
 	public function getContenu() {
 		return $this->contenucomment;
+	}
+
+	public function getDateComment() {
+		return $this->datecomment;
 	}
  
 }

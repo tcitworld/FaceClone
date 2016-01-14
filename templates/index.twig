@@ -36,13 +36,14 @@
 		{% if posts is not empty %}
 		<div id="activity">
 		{% for post in posts | reverse %}
+			<div class="post" value="{{ post.id }}">
 				{% set narcisse = 0 %}
 				<div class="box-header with-border">
 					<div class='user-block'>
 		                <img class='img-circle img-bordered-sm' src='{{ post.user.Gravatar }}' alt='user image'>
 		                <span class='username'>
 		                	<a href="profile.php?id={{ post.user.id }}">{{ post.user.prenom }} {{ post.user.nom }}</a>
-		                	<a href='calls/deletepost.php?idpost={{ post.id }}' class='pull-right btn-box-tool'><i class='fa fa-times'></i></a>
+		                	<button value="{{ post.id }}" class='pull-right btn btn-box-tool delpost'><i class='fa fa-times'></i></button>
 		                </span>
 		                <span class='description'>{{ post.datemessage }}</span>
 	                </div><!-- /.user-block -->
@@ -63,7 +64,8 @@
 	                	</div>
 	                </div>
                 {% endif %}
-                	<button class="btn btn-default btn-xs" href="calls/like.php?idpost={{ post.id }}"><i class="fa fa-thumbs-o-up"></i>Like</button>
+                	<button class="btn btn-default btn-xs like" value="{{ post.id }}"><i class="fa fa-thumbs-o-up"></i>Like</button>
+                	<span class="likers text-sm" value="{{ post.id }}">
             		{% for like in post.likes | slice(0, 5) %}
             			{% if like.id != user.id %}<a class="link-blue" href="profile.php?id={{ like.id }}">{% endif %}
             			<span class="text-sm">
@@ -88,21 +90,44 @@
             				{% if post.likes | length == 1 %}aime.{% elseif post.likes | length > 1 %}aiment.{% endif %}
             			{% endif %}
             		</span>
-            		<span class="pull-right text-muted">{{ post.likes | length }} likes - {{ post.comments | length }} comments</span>
+            		</span>
+            		<span class="pull-right text-muted">{{ post.likes | length }} <i class="fa fa-thumbs-o-up"></i> - {{ post.comments | length }} <i class="fa fa-commenting"></i></span>
                 </div>
-			{% if post.comments is not empty %}
+				{% if post.comments is not empty %}
 	           	<div class="box-footer box-comments">
 	           		{% for comment in post.comments %}
-	           		<div class="box-comment">
+	           		<div class="box-comment{{ loop.index > 3 ? ' hidden' }}">
 	           			<img class="img-circle img-sm" src="{{ comment.membre.gravatar }}">
 		           		<div class="comment-text">
-		           			<span class="username">{{ comment.membre.prenom }} {{ comment.membre.nom }}</span>
+		           			<span class="username">{{ comment.membre.prenom }} {{ comment.membre.nom }}
+								<span class="text-muted pull-right">{{ comment.datecomment }}</span>
+		           			</span>
 		           			{{ comment.contenu }}
 		           		</div>
 	           		</div>
+           			{% if post.comments | length > 3 and loop.revindex == 1 %}<a class="morecoms" href="">
+		           		Afficher
+		           		{% if (post.comments | length - 3) == 1 %} 
+		           		un autre commentaire
+		           		{% else %}
+							{{ post.comments | length - 3 }} autres commentaires
+						{% endif %}
+					</a>
+	           		{% else %}
+	           		{% endif %}
 	           		{% endfor %}
 	           	</div>
-           	{% endif %}
+           		{% endif %}
+           		<div class="box-footer">
+           			<form action="#" method="post">
+                    <img class="img-responsive img-circle img-sm" src="{{ user.gravatar }}" alt="alt text">
+                    <!-- .img-push is used to add margin to elements next to floating images -->
+                    <div class="img-push">
+                      <input class="form-control input-sm" placeholder="Appuyez sur entrée pour envoyer votre message" type="text">
+                    </div>
+                  </form>
+           		</div>
+           	</div>
 		{% endfor %}
 		</div>
 		{% else %}

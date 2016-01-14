@@ -164,6 +164,39 @@
 	<script src="templates/AdminLTE/plugins/select2/select2.full.min.js"></script>
 <script type="text/javascript">
   $(".select2").select2();
+
+
+  $(".like").click(function(){
+    val = $(this).attr('value');
+    $.ajax({
+      method:"GET",
+      url:"calls/like.php",
+      data:{ idpost : val }
+    })
+    .done(function() {
+        $(".likers[value=" + val + "]").append(" Vous aimez.");
+      });
+  });
+
+  $(".delpost").click(function(){
+    val = $(this).attr('value');
+    $.ajax({
+      method:"GET",
+      url:"calls/deletepost.php",
+      data:{ idpost : val }
+    })
+    .done(function() {
+        $(".post[value=" + val + "]").slideUp();
+      });
+  });
+
+  $(".morecoms").on('click',function(){
+    $(this).parent().children(".box-comment").removeClass('hidden');
+    $(".morecoms").addClass('hidden');
+    return false;
+  });
+  
+
 </script>
 
 </body>

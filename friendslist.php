@@ -20,6 +20,12 @@ $message = NULL;
 
 */
 
+
+/*
+Launch a friend request : check that it is not already a friend
+
+*/
+
 if (isset($_GET['adduser'])) {
 	if (!in_array($_GET['adduser'],$friends)) {
 		$database->setFriendRequest($user->getid(),$_GET['adduser']);
@@ -43,11 +49,6 @@ if (isset($_GET['cancel'])) {
 }
 
 
-
-/*
-Launch a friend request : check that it is not already a friend
-
-*/
 
 /*
 
