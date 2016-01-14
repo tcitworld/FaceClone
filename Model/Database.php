@@ -451,5 +451,62 @@ class Database {
 		$query->execute();
 	}
 
+	/*
+	
+	Notifications-related function
+
+	*/
+
+	/*
+
+	function getNotifications : get notifications for an user
+	@param int $userid
+	@return [mixed]
+
+	*/
+
+	public function getNotifications($userid) {
+		$query = $this->connexion->prepare('SELECT * FROM NOTIFICATIONS WHERE idmembre = ?');
+		$query->execute(array($userid));
+		$donnees = $query->fetchAll();
+		return $donnees;
+	}
+
+	/*
+
+	function getNotifications : set a new notification
+	@param int $userid
+	@param str $action
+	@param int $autremembre
+
+	*/
+
+	public function setNotification($userid,$action,$autremembre = NULL) {
+		$query = $this->connexion->prepare('INSERT INTO NOTIFICATIONS (idmembre,action,autremembre,readstatus,datenotif)
+			VALUES (:idmembre,:action,:autremembre,:readstatus,:datenotif)');
+		$query->bindParam(':idmembre',$userid);
+		$query->bindParam(':action',$action);
+		$query->bindParam(':autremembre',$autremembre);
+		$query->bindParam(':readstatus',true);
+		$today = date('Y/m/d H/i/s', time());
+		$query->bindParam(':datenotif',$today);
+		$query->execute();
+		return $donnees;
+	}
+
+	/*
+
+	function updateNotification : set notification as read
+	@param int $notificationid
+
+	*/
+
+	public function updateNotification($notificationid) {
+		$query = $this->connexion->prepare('UPDATE NOTIFICATIONS SET readstatus = :status
+			WHERE idnotif = :idnotif');
+		$query->bindParam(':idnotif',$notificationid);
+		$query->execute();
+	}
+
 }
 ?>

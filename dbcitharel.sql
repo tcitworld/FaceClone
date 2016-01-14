@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Sam 09 Janvier 2016 à 17:12
+-- Généré le :  Jeu 14 Janvier 2016 à 20:36
 -- Version du serveur :  10.1.10-MariaDB-log
--- Version de PHP :  7.0.1
+-- Version de PHP :  7.0.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -108,7 +108,13 @@ CREATE TABLE `COMMENT` (
 --
 
 INSERT INTO `COMMENT` (`idcomment`, `idmembre`, `idpost`, `contenucomment`, `datecommentaire`) VALUES
-(1, 29, 28, 'Hého', '2016-01-20');
+(18, 29, 21, 'gh', '2016-01-14'),
+(19, 29, 14, 'tyreyr', '2016-01-14'),
+(20, 29, 29, 'hého', '2016-01-14'),
+(21, 29, 29, 'flûte', '2016-01-14'),
+(22, 29, 29, 'ça fait bcp de coms', '2016-01-14'),
+(23, 29, 29, 'trop même', '2016-01-14'),
+(24, 29, 29, 'on voit plus grand chose', '2016-01-14');
 
 -- --------------------------------------------------------
 
@@ -148,9 +154,7 @@ CREATE TABLE `LIKES` (
 --
 
 INSERT INTO `LIKES` (`idpost`, `idmembre`) VALUES
-(21, 29),
 (22, 32),
-(28, 29),
 (28, 32);
 
 -- --------------------------------------------------------
@@ -222,6 +226,28 @@ INSERT INTO `MP` (`idmp`, `idconversation`, `idmembre`, `contenump`, `datemp`) V
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `NOTIFICATIONS`
+--
+
+CREATE TABLE `NOTIFICATIONS` (
+  `idnotif` int(11) NOT NULL,
+  `idmembre` int(11) NOT NULL,
+  `action` varchar(255) NOT NULL,
+  `autremembre` int(11) DEFAULT NULL,
+  `readstatus` tinyint(1) NOT NULL,
+  `datenotif` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `NOTIFICATIONS`
+--
+
+INSERT INTO `NOTIFICATIONS` (`idnotif`, `idmembre`, `action`, `autremembre`, `readstatus`, `datenotif`) VALUES
+(1, 29, 'poke', 31, 1, '2016-01-08');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `PARTICIPENT`
 --
 
@@ -278,8 +304,7 @@ INSERT INTO `POST` (`idpost`, `idmembre`, `contenupost`, `datemessage`, `attachm
 (21, 29, 'un autre', '2015-12-29 03:06:16', NULL),
 (22, 29, 'un bon', '2015-12-29 15:07:51', NULL),
 (28, 33, 'toto\r\n', '2015-12-29 15:25:02', NULL),
-(29, 29, 'J\'ai utilisé https://github.com/j0k3r/graby surtout', '2016-01-05 23:06:15', 'https://github.com/j0k3r/graby'),
-(45, 29, 'http://twig.sensiolabs.org/doc/filters/raw.html', '2016-01-06 21:23:36', 'http://twig.sensiolabs.org/doc/filters/raw.html');
+(29, 29, 'J\'ai utilisé https://github.com/j0k3r/graby surtout', '2016-01-05 23:06:15', 'https://github.com/j0k3r/graby');
 
 --
 -- Index pour les tables exportées
@@ -342,6 +367,14 @@ ALTER TABLE `MP`
   ADD KEY `FKConversationMP` (`idconversation`);
 
 --
+-- Index pour la table `NOTIFICATIONS`
+--
+ALTER TABLE `NOTIFICATIONS`
+  ADD PRIMARY KEY (`idnotif`),
+  ADD KEY `idmembre` (`idmembre`),
+  ADD KEY `autremembre` (`autremembre`);
+
+--
 -- Index pour la table `PARTICIPENT`
 --
 ALTER TABLE `PARTICIPENT`
@@ -370,7 +403,7 @@ ALTER TABLE `CARNET`
 -- AUTO_INCREMENT pour la table `COMMENT`
 --
 ALTER TABLE `COMMENT`
-  MODIFY `idcomment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idcomment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT pour la table `CONVERSATIONS`
 --
@@ -387,10 +420,15 @@ ALTER TABLE `MEMBER`
 ALTER TABLE `MP`
   MODIFY `idmp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 --
+-- AUTO_INCREMENT pour la table `NOTIFICATIONS`
+--
+ALTER TABLE `NOTIFICATIONS`
+  MODIFY `idnotif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT pour la table `POST`
 --
 ALTER TABLE `POST`
-  MODIFY `idpost` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `idpost` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 --
 -- Contraintes pour les tables exportées
 --
@@ -422,6 +460,13 @@ ALTER TABLE `LIKES`
 ALTER TABLE `MP`
   ADD CONSTRAINT `FKConversationMP` FOREIGN KEY (`idconversation`) REFERENCES `CONVERSATIONS` (`identifiant`),
   ADD CONSTRAINT `FKMEMBERMP` FOREIGN KEY (`idmembre`) REFERENCES `MEMBER` (`idmembre`);
+
+--
+-- Contraintes pour la table `NOTIFICATIONS`
+--
+ALTER TABLE `NOTIFICATIONS`
+  ADD CONSTRAINT `FKNotifOtherUser` FOREIGN KEY (`autremembre`) REFERENCES `MEMBER` (`idmembre`),
+  ADD CONSTRAINT `FKNotifUser` FOREIGN KEY (`idmembre`) REFERENCES `MEMBER` (`idmembre`);
 
 --
 -- Contraintes pour la table `PARTICIPENT`

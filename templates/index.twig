@@ -64,7 +64,7 @@
 	                	</div>
 	                </div>
                 {% endif %}
-                	<button class="btn btn-default btn-xs like" value="{{ post.id }}"><i class="fa fa-thumbs-o-up"></i>Like</button>
+                	<button class="btn btn-default btn-xs like" value="{{ post.id }}"><i class="fa fa-thumbs-o-up"></i> Like</button>
                 	<span class="likers text-sm" value="{{ post.id }}">
             		{% for like in post.likes | slice(0, 5) %}
             			{% if like.id != user.id %}<a class="link-blue" href="profile.php?id={{ like.id }}">{% endif %}
@@ -102,7 +102,7 @@
 		           			<span class="username">{{ comment.membre.prenom }} {{ comment.membre.nom }}
 								<span class="text-muted pull-right">{{ comment.datecomment }}</span>
 		           			</span>
-		           			{{ comment.contenu }}
+		           			{{ comment.contenu | auto_link_text | markdown }}
 		           		</div>
 	           		</div>
            			{% if post.comments | length > 3 and loop.revindex == 1 %}<a class="morecoms" href="">

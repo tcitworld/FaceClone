@@ -37,7 +37,7 @@ class Tools {
 		$engine = new MarkdownEngine\MichelfMarkdownEngine();
 
 
-		$loader = new Twig_Loader_Filesystem(__DIR__ . '/templates/'); // Dossier contenant les templates
+		$loader = new Twig_Loader_Filesystem(__DIR__ . '/../templates/'); // Dossier contenant les templates
 
 		$twig = new Twig_Environment($loader, array('cache' => false,'debug' => true));
 		$twig->addExtension(new Twig_Extension_Debug()); // for debugging

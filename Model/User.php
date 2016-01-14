@@ -27,6 +27,7 @@ class User {
 		$this->dateLastConnexion = $user['dateLastConnexion'];
 		$this->friends = json_decode($user['Friends']); // decode the list of friends in database to an array
 		$this->conversations = $this->database->getConversationsForUser($this->id);
+		$this->notifications = $this->database->getNotifications($this->id);
 	}
 
 	public function getid() {
@@ -95,6 +96,25 @@ class User {
 			}
 		}
 		return $conv2;
+	}
+
+	public function getNotifications() {
+		$notifobj = array();
+		foreach ($this->notifications as $notif) {
+			$notifobj[] = new Notification($notif['idnotif'],$notif['idmembre'],$notif['action'],$notif['autremembre'],$notif['readstatus'],$notif['datenotif']);
+		}
+		return $notifobj;
+	}
+
+	public function getUnreadNotifications() { 
+		$notifs = $this->getNotifications();
+		$notifs2 = array();
+		foreach ($notifs as $notif) {
+			if ($notif->getReadStatus() == '1') { // return only unread conversations
+				$notifs2[]=$notif;
+			}
+		}
+		return $notifs2;
 	}
 
 }
