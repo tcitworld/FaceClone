@@ -168,6 +168,7 @@
 
   $(".like").click(function(){
     val = $(this).attr('value');
+    likebtn = $(this);
     $.ajax({
       method:"GET",
       url:"calls/like.php",
@@ -175,6 +176,8 @@
     })
     .done(function() {
         $(".likers[value=" + val + "]").append(" Vous aimez.");
+        likes = likebtn.parent().find('.numberlikes');
+        likes.text(parseInt(likes.text())+1);
       });
   });
 
@@ -194,6 +197,23 @@
     $(this).parent().children(".box-comment").removeClass('hidden');
     $(".morecoms").addClass('hidden');
     return false;
+  });
+
+  $(".newcommentform").submit(function(event) {
+    ourform = $(this);
+    idpostval = $(this).find('.hiddenidpost').val();
+    contenucomment = $(this).find("input[name='comment']").val();
+    $.ajax({
+      method:"POST",
+      url:"calls/newcom.php",
+      data:{ idpost : idpostval, comment : contenucomment }
+    })
+    .done(function() {
+      ourform.parent().prepend('<span><i class="fa fa-check"></i>Commentaire ajouté</span>');
+      coms = ourform.parent().parent().find('.numbercoms');
+      coms.text(parseInt(coms.text())+1);
+      });
+    event.preventDefault();
   });
   
 

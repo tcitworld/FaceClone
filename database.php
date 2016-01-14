@@ -184,6 +184,18 @@ class Database {
 		return $donnees;
 	}
 
+	public function addComment($idpost,$idmembre,$contenucom) {
+		$query = $this->connexion->prepare('INSERT INTO COMMENT 
+			(idmembre,idpost,contenucomment,datecommentaire) 
+			VALUES (:idmembre, :idpost, :contenucomment, :datecommentaire)');
+		$query->bindParam(':idmembre',$idmembre);
+		$query->bindParam(':idpost',$idpost);
+		$query->bindParam(':contenucomment',$contenucom);
+		$today = date('Y/m/d H/i/s', time());
+		$query->bindParam(':datecommentaire',$today);
+		$query->execute();
+	}
+
 	/*
 
 	Embeed-URLs

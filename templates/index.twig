@@ -91,7 +91,7 @@
             			{% endif %}
             		</span>
             		</span>
-            		<span class="pull-right text-muted">{{ post.likes | length }} <i class="fa fa-thumbs-o-up"></i> - {{ post.comments | length }} <i class="fa fa-commenting"></i></span>
+            		<span class="pull-right text-muted"><span class="numberlikes">{{ post.likes | length }}</span> <i class="fa fa-thumbs-o-up"></i> - <span class="numbercoms">{{ post.comments | length }}</span> <i class="fa fa-commenting"></i></span>
                 </div>
 				{% if post.comments is not empty %}
 	           	<div class="box-footer box-comments">
@@ -119,11 +119,12 @@
 	           	</div>
            		{% endif %}
            		<div class="box-footer">
-           			<form action="#" method="post">
+           			<form action="calls/newcom.php" method="post" class="newcommentform">
                     <img class="img-responsive img-circle img-sm" src="{{ user.gravatar }}" alt="alt text">
                     <!-- .img-push is used to add margin to elements next to floating images -->
                     <div class="img-push">
-                      <input class="form-control input-sm" placeholder="Appuyez sur entrée pour envoyer votre message" type="text">
+                      <input class="form-control input-sm" placeholder="Appuyez sur entrée pour envoyer votre message" type="text" name="comment">
+                      <input type="hidden" name="idpost" class="hiddenidpost" value="{{ post.id }}">
                     </div>
                   </form>
            		</div>
