@@ -1,5 +1,5 @@
 <?php
-require_once('global.php');
+require_once(dirname(__FILE__) . '/../global.php');
 
 date_default_timezone_set('Europe/Paris');
 
@@ -13,7 +13,7 @@ class Database {
 
 	function __construct() {
 		try {
-			require("connect_db.php");
+			require(dirname(__FILE__) . "/../connect_db.php");
 			$dsn="mysql:dbname=".BASE.";host=".SERVER;
 			$this->connexion=new PDO($dsn,USER,PASSWD);
 		} catch(PDOException $e){
@@ -487,24 +487,39 @@ class Database {
 		$query->bindParam(':idmembre',$userid);
 		$query->bindParam(':action',$action);
 		$query->bindParam(':autremembre',$autremembre);
-		$query->bindParam(':readstatus',true);
+		$query->bindValue(':readstatus',true);
 		$today = date('Y/m/d H/i/s', time());
 		$query->bindParam(':datenotif',$today);
 		$query->execute();
-		return $donnees;
 	}
 
 	/*
 
-	function updateNotification : set notification as read
+	function updateNotification : set notification as read or unread
 	@param int $notificationid
+	@param int|bool $notificationStatus
 
 	*/
 
-	public function updateNotification($notificationid) {
+	public function updateNotification($notificationid,$notificationStatus) {
 		$query = $this->connexion->prepare('UPDATE NOTIFICATIONS SET readstatus = :status
 			WHERE idnotif = :idnotif');
 		$query->bindParam(':idnotif',$notificationid);
+		$query->bindParam(':status',$notificationStatus);
+		$query->execute();
+	}
+
+	/*
+	
+	function markAllNotificationsAsRead : set all notifications as read for an user
+	@param int userid
+
+	*/
+
+	public function markAllNotificationsAsRead($userid) {
+		$query = $this->connexion->prepare('UPDATE NOTIFICATIONS SET readstatus = 0
+			WHERE idmembre = :idmembre');
+		$query->bindParam(':idmembre',$userid);
 		$query->execute();
 	}
 

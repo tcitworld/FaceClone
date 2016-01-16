@@ -43,7 +43,9 @@
 		                <img class='img-circle img-bordered-sm' src='{{ post.user.Gravatar }}' alt='user image'>
 		                <span class='username'>
 		                	<a href="profile.php?id={{ post.user.id }}">{{ post.user.prenom }} {{ post.user.nom }}</a>
-		                	<button value="{{ post.id }}" class='pull-right btn btn-box-tool delpost'><i class='fa fa-times'></i></button>
+		                	{% if user.id == post.user.id %}
+		                		<button value="{{ post.id }}" class='pull-right btn btn-box-tool delpost'><i class='fa fa-times'></i></button>
+		                	{% endif %}
 		                </span>
 		                <span class='description'>{{ post.datemessage }}</span>
 	                </div><!-- /.user-block -->

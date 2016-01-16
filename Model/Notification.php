@@ -52,7 +52,7 @@ class Notification {
 
 	*/
 
-	public function getAction() {
+	private function getAction() {
 		return $this->action;
 	}
 
@@ -65,6 +65,23 @@ class Notification {
 
 	public function getOtherMember() {
 		return $this->autremembre;
+	}
+
+	public function getFullNotification() {
+		switch ($this->getAction()) {
+			case 'poke':
+				return array('content' => $this->getOtherMember()->getPrenom() . ' ' . $this->getOtherMember()->getNom() . ' vous a envoyé un poke', 'link' => 'profile.php?id=' . $this->getOtherMember()->getId());
+				break;
+			case 'friendAsk':
+				return array('content' => $this->getOtherMember()->getPrenom() . ' ' . $this->getOtherMember()->getNom() . ' vous a demandé en ami', 'link' => 'profile.php?id=' . $this->getOtherMember()->getId());
+					break;
+			case 'friendReqAccept':
+				return array('content' => $this->getOtherMember()->getPrenom() . ' ' . $this->getOtherMember()->getNom() . ' a accepté votre demande d\'ami', 'link' => 'profile.php?id=' . $this->getOtherMember()->getId());
+			
+			default:
+				# code...
+				break;
+		}
 	}
 
 	/*

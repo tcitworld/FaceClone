@@ -86,7 +86,7 @@
         <li class="dropdown notifications-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-bell-o"></i>
-            <span class="label label-warning">{{ user.unreadnotifications | length >= 1 ? user.unreadnotifications | length }}</span>
+            <span class="label label-warning numnotifs">{{ user.unreadnotifications | length >= 1 ? user.unreadnotifications | length }}</span>
           </a>
           <ul class="dropdown-menu">
             <li class="header">
@@ -102,16 +102,17 @@
               <!-- inner menu: contains the actual data -->
               <ul class="menu">
                 {% for notification in user.Notifications | slice(0, 5) | reverse %}
-                <li>
-                  <a href="#">
-                    <i class="ion ion-ios-people info"></i>
-                    {{ notification.othermember.prenom }} {{ notification.othermember.nom }} vous a {{ notification.action }}
+                <li class="notifsblock{{ notification.readstatus ? ' bg-gray-active color-palette' }}" value="{{ notification.IdNotification }}">
+                  <a href="{{ notification.fullnotification.link }}" style="white-space: normal;">
+                    <div class="pull-left">
+                      <img src="{{ notification.OtherMember.gravatar }}" style="margin-left: auto;margin-top: auto;margin-down: auto;margin-right: 10px;width:40px;height: 40px;">
+                    </div>
+                    {{ notification.fullnotification.content }}
                   </a>
                 </li>
                 {% endfor %}
               </ul>
             </li>
-            <li class="footer"><a href="#">View all</a></li>
           </ul>
         </li>
         <!-- User Account: style can be found in dropdown.less -->
@@ -258,13 +259,33 @@
       }
 
       ourform.parent().parent().find('.box-comments').append('<div class="box-comment"><img class="img-circle img-sm" src="{{ user.gravatar }}"><div class="comment-text"><span class="username">{{ user.prenom }} {{ user.nom }}<span class="text-muted pull-right">' + datecomment + '</span></span>' + contenucomment + '</div></div>'); // create a comment with the information we have
+
       ourform.parent().parent().find('.box-comment').removeClass('hidden'); // show all other comments
       $(".morecoms").addClass('hidden');
+
       coms = ourform.parent().parent().find('.numbercoms'); /* Increate comments counter */
       coms.text(parseInt(coms.text())+1);
+
       ourform.find("input[name='comment']").val(''); // reset the text input
       });
     event.preventDefault();
+  });
+
+  $(".notifsblock").hover(function(event) { // TODO : Decrease notification count properly
+    if ($(this).hasClass('bg-gray-active')) {
+    notif = $(this);
+    $.ajax({
+      method:"GET",
+      url:"calls/readNotifications.php",
+      data:{idnotif : notif.attr('value')}
+    })
+    .done(function() {
+      numnotifs = $(".numnotifs");
+      notifs = parseInt(numnotifs.text())-1;
+      numnotifs.text(notifs > 0 ? notifs : '');
+      notif.removeClass("bg-gray-active color-palette");
+    });
+  }
   });
   
 

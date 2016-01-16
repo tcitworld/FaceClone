@@ -25,7 +25,7 @@ class User {
 		$this->dateNaissance = $user['dateNaissance'];
 		$this->dateInscription = $user['dateInscription'];
 		$this->dateLastConnexion = $user['dateLastConnexion'];
-		$this->friends = json_decode($user['Friends']); // decode the list of friends in database to an array
+		$this->friends = json_decode($user['Friends'],true); // decode the list of friends in database to an array
 		$this->conversations = $this->database->getConversationsForUser($this->id);
 		$this->notifications = $this->database->getNotifications($this->id);
 	}

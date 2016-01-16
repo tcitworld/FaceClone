@@ -1,6 +1,6 @@
 <?php
 
-require_once('global.php');
+require_once(dirname(__FILE__) . '/../global.php');
 use Aptoma\Twig\Extension\MarkdownExtension;
 use Aptoma\Twig\Extension\MarkdownEngine;
 use Graby\Graby;

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Jeu 14 Janvier 2016 à 20:36
+-- Généré le :  Sam 16 Janvier 2016 à 20:29
 -- Version du serveur :  10.1.10-MariaDB-log
 -- Version de PHP :  7.0.2
 
@@ -30,13 +30,6 @@ CREATE TABLE `ASKFRIEND` (
   `user` int(11) NOT NULL,
   `friend` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `ASKFRIEND`
---
-
-INSERT INTO `ASKFRIEND` (`user`, `friend`) VALUES
-(29, 31);
 
 -- --------------------------------------------------------
 
@@ -180,8 +173,8 @@ CREATE TABLE `MEMBER` (
 --
 
 INSERT INTO `MEMBER` (`idmembre`, `nom`, `prenom`, `mail`, `dateNaissance`, `password`, `dateInscription`, `dateLastConnexion`, `Friends`) VALUES
-(29, 'Citharel', 'Thomas', 'tcit@tcit.fr', '1994-05-04', '$2y$10$mxr8lbZoAmnlK7utzLm1FuTjyy6N8jbrvMxxjWqDrRL6Dtz9XlLj6', '2015-12-23', '2015-12-23', '[]'),
-(31, 'Citharel', 'Clément', 'clément@tcit.fr', '1994-05-04', '$2y$10$eVGbWR4dIwq.vfTzLLyxqe756ziH3DlBpPBRV0dpSTD1pqVdR8S1q', '2015-12-24', '2015-12-24', '["29","33","32"]'),
+(29, 'Citharel', 'Thomas', 'tcit@tcit.fr', '1994-05-04', '$2y$10$mxr8lbZoAmnlK7utzLm1FuTjyy6N8jbrvMxxjWqDrRL6Dtz9XlLj6', '2015-12-23', '2015-12-23', '["31"]'),
+(31, 'Citharel', 'Clément', 'clément@tcit.fr', '1994-05-04', '$2y$10$eVGbWR4dIwq.vfTzLLyxqe756ziH3DlBpPBRV0dpSTD1pqVdR8S1q', '2015-12-24', '2015-12-24', '{"1":"33","2":"32","3":"29"}'),
 (32, 'Citharel', 'Philippe', 'toto@titi.fr', '1994-05-04', '$2y$10$oNlal0JE0EBA6rVWDD0e5Oi81x1Ilm5p7iT3Z9nai3pkpeHgDENDi', '2015-12-24', '2015-12-24', '["29"]'),
 (33, 'Citharel', 'Maurice', 'momo@tcit.fr', '1932-06-11', '$2y$10$Fs.q1slHZWsLyztvA9eCaOuMFeE83RN/jZaJo6xseVaDYFdCkHWAO', '2015-12-29', '2015-12-29', '');
 
@@ -243,7 +236,11 @@ CREATE TABLE `NOTIFICATIONS` (
 --
 
 INSERT INTO `NOTIFICATIONS` (`idnotif`, `idmembre`, `action`, `autremembre`, `readstatus`, `datenotif`) VALUES
-(1, 29, 'poke', 31, 1, '2016-01-08');
+(1, 29, 'poke', 31, 0, '2016-01-08'),
+(2, 29, 'friendAsk', 31, 0, '2016-01-16'),
+(8, 29, 'friendReqAccept', 31, 0, '2016-01-16'),
+(9, 31, 'friendAsk', 29, 1, '2016-01-16'),
+(10, 29, 'friendReqAccept', 31, 0, '2016-01-16');
 
 -- --------------------------------------------------------
 
@@ -423,7 +420,7 @@ ALTER TABLE `MP`
 -- AUTO_INCREMENT pour la table `NOTIFICATIONS`
 --
 ALTER TABLE `NOTIFICATIONS`
-  MODIFY `idnotif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idnotif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT pour la table `POST`
 --

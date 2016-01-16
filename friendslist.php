@@ -29,6 +29,7 @@ Launch a friend request : check that it is not already a friend
 if (isset($_GET['adduser'])) {
 	if (!in_array($_GET['adduser'],$friends)) {
 		$database->setFriendRequest($user->getid(),$_GET['adduser']);
+		$database->setNotification($_GET['adduser'],'friendAsk',$user->getid());
 		$message = "L'invitation a bien été envoyée";
 	}
 }
@@ -84,6 +85,8 @@ if (isset($_GET['accept'])) {
 		array_push($friendsOfFriend,$user->getid()); // adding ourselves to his array of friends ids
 		$database->setFriends($friend->getid(),json_encode($friendsOfFriend)); // saving his friend list
 	}
+	$notifAction = "friendReqAccept";
+	$database->setNotification($_GET['accept'],$notifAction,$user->getid());
 	$message = "Vous êtes désormais ami avec cette personne";
 }
 
