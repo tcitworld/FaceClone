@@ -7,9 +7,10 @@ class Notification {
 	private $autremembre;
 	private $readstatus;
 	private $datenotif;
+	private $post;
 	private $database;
 
-	function __construct($idnotification,$idmembre,$action,$autremembre,$readstatus,$datenotif) {
+	function __construct($idnotification,$idmembre,$action,$autremembre,$readstatus,$datenotif,$idpost) {
 		$this->database = new Database;
 		$this->idnotification = $idnotification;
 		$this->membre = new User($this->database->getMailForId($idmembre)[0]);
@@ -19,6 +20,13 @@ class Notification {
 		} else {
 			$this->autremembre = NULL;
 		}
+
+		if(isset($idpost)){
+			$this->post = new Post($idpost);
+		} else {
+			$this->post = NULL;
+		}
+
 		$this->readstatus = $readstatus;
 		$this->datenotif = $datenotif;
 	}
@@ -67,6 +75,10 @@ class Notification {
 		return $this->autremembre;
 	}
 
+	public function getPost() {
+		return $this->post;
+	}
+
 	public function getFullNotification() {
 		switch ($this->getAction()) {
 			case 'poke':
@@ -77,6 +89,10 @@ class Notification {
 					break;
 			case 'friendReqAccept':
 				return array('content' => $this->getOtherMember()->getPrenom() . ' ' . $this->getOtherMember()->getNom() . ' a accepté votre demande d\'ami', 'link' => 'profile.php?id=' . $this->getOtherMember()->getId());
+			case 'like':
+				return array('content' => $this->getOtherMember()->getPrenom() . ' ' . $this->getOtherMember()->getNom() . ' a aimé votre post', 'link' => 'post.php?idpost=' . $this->getPost()->getId());
+			case 'comment':
+				return array('content' => $this->getOtherMember()->getPrenom() . ' ' . $this->getOtherMember()->getNom() . ' a commenté sur votre post', 'link' => 'post.php?idpost=' . $this->getPost()->getId());
 			
 			default:
 				# code...

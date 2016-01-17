@@ -191,11 +191,13 @@
       url:"calls/like.php",
       data:{ idpost : val }
     })
-    .done(function() {
+    .done(function(html) {
+      if (html != 'no') {
         $(".likers[value=" + val + "]").append(" Vous aimez.");
         likes = likebtn.parent().find('.numberlikes');
         likes.text(parseInt(likes.text())+1);
-      });
+      }
+    });
   });
 
   /*
@@ -211,8 +213,11 @@
       url:"calls/deletepost.php",
       data:{ idpost : val }
     })
-    .done(function() {
-        $(".post[value=" + val + "]").slideUp();
+    .done(function(html) {
+      alert(html);
+        if (html == 'ok') {
+          $(".post[value=" + val + "]").slideUp();
+        }
       });
   });
 
@@ -243,7 +248,7 @@
       url:"calls/newcom.php",
       data:{ idpost : idpostval, comment : contenucomment }
     })
-    .done(function() {
+    .done(function(html) {
 
       var d = new Date(); /* Get the current date */
 

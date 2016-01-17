@@ -481,12 +481,13 @@ class Database {
 
 	*/
 
-	public function setNotification($userid,$action,$autremembre = NULL) {
-		$query = $this->connexion->prepare('INSERT INTO NOTIFICATIONS (idmembre,action,autremembre,readstatus,datenotif)
-			VALUES (:idmembre,:action,:autremembre,:readstatus,:datenotif)');
+	public function setNotification($userid,$action,$autremembre = NULL, $post= NULL) {
+		$query = $this->connexion->prepare('INSERT INTO NOTIFICATIONS (idmembre,action,autremembre,idpost,readstatus,datenotif)
+			VALUES (:idmembre,:action,:autremembre,:idpost,:readstatus,:datenotif)');
 		$query->bindParam(':idmembre',$userid);
 		$query->bindParam(':action',$action);
 		$query->bindParam(':autremembre',$autremembre);
+		$query->bindParam(':idpost',$post);
 		$query->bindValue(':readstatus',true);
 		$today = date('Y/m/d H/i/s', time());
 		$query->bindParam(':datenotif',$today);

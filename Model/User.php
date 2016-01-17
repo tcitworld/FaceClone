@@ -101,7 +101,7 @@ class User {
 	public function getNotifications() {
 		$notifobj = array();
 		foreach ($this->notifications as $notif) {
-			$notifobj[] = new Notification($notif['idnotif'],$notif['idmembre'],$notif['action'],$notif['autremembre'],$notif['readstatus'],$notif['datenotif']);
+			$notifobj[] = new Notification($notif['idnotif'],$notif['idmembre'],$notif['action'],$notif['autremembre'],$notif['readstatus'],$notif['datenotif'],$notif['idpost']);
 		}
 		return $notifobj;
 	}

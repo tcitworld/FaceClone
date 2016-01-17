@@ -1,41 +1,11 @@
 {% extends "base.twig" %}
-{% block title %}Index{% endblock %}
+{% block title %}Post par {{ post.user.prenom }} {{ post.user.nom }}{% endblock %}
 {% block content %}
-{% set narcisse = 0 %}
-		{% if not connected %}
-			{% include online ? '' : 'login.twig' %}
-		{% endif %}
-	{% if connected %}
-	<section class="content-header">
-	<div class="row">
-		<div class="box box-default">
-		{% if newsession %}
-		<div class="alert alert-info alert-dismissable">
-			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			<h4><i class="icon fa fa-info"></i> Bonjour !</h4>
-			Heureux de vous retrouver, {{ user.prenom }} {{ user.nom }}
-		</div>
-		{% endif %}
-		<form action="index.php" method="post">
-			<div class="box col-md-6">
-	        	<div class="box-header">
-					<h3 class="box-title">Quoi de neuf ?</h3>
-				</div>
-				<div class="box-body pad">
-					<textarea class="form-control newMessage" name="msg" placeholder="Entrez votre message ici"></textarea>
-					<button type="submit" class="btn btn-primary btn-md pull-right">Envoyer</button>
-				</div>
-			</div>
-		</form>
-		</div>
-	</div>
-	</section>
-	<section class="content container">
+<section class="content container">
 		<div class="row">
 		<div class="col-md-12 center-block">
-		{% if posts is not empty %}
+		{% if post is not empty %}
 		<div id="activity">
-		{% for post in posts | reverse %}
 			<div class="post" value="{{ post.id }}">
 				{% set narcisse = 0 %}
 				<div class="box-header with-border">
@@ -47,7 +17,7 @@
 		                		<button value="{{ post.id }}" class='pull-right btn btn-box-tool delpost'><i class='fa fa-times'></i></button>
 		                	{% endif %}
 		                </span>
-		                <span class='description'><a class="link-black text-sm" href="post.php?idpost={{post.id}}">{{ post.datemessage }}</a></span>
+		                <span class='description'>{{ post.datemessage }}</span>
 	                </div><!-- /.user-block -->
 	            </div>
                 <div class="box-body">
@@ -98,7 +68,7 @@
 				{% if post.comments is not empty %}
 	           	<div class="box-footer box-comments">
 	           		{% for comment in post.comments %}
-	           		<div class="box-comment{{ loop.index > 3 ? ' hidden' }}">
+	           		<div class="box-comment">
 	           			<img class="img-circle img-sm" src="{{ comment.membre.gravatar }}">
 		           		<div class="comment-text">
 		           			<span class="username">{{ comment.membre.prenom }} {{ comment.membre.nom }}
@@ -107,16 +77,6 @@
 		           			{{ comment.contenu | auto_link_text | markdown }}
 		           		</div>
 	           		</div>
-           			{% if post.comments | length > 3 and loop.revindex == 1 %}<a class="morecoms" href="">
-		           		Afficher
-		           		{% if (post.comments | length - 3) == 1 %} 
-		           		un autre commentaire
-		           		{% else %}
-							{{ post.comments | length - 3 }} autres commentaires
-						{% endif %}
-					</a>
-	           		{% else %}
-	           		{% endif %}
 	           		{% endfor %}
 	           	</div>
            		{% endif %}
@@ -131,16 +91,11 @@
                   </form>
            		</div>
            	</div>
-		{% endfor %}
-		</div>
-		{% else %}
-		<div class="callout callout-warning">
-            <h4>Ce flux d'activités est bien vide !</h4>
-            <p>Vous n'avez pas encore de flux d'activité car ni vous ni vos amis n'avez posté quelque chose.</p>
-      	</div>
-		{% endif %}
-		</div>
-		</div>
-	</section>
-	{% endif %}
+        </div>
+   	</div>
+</div>
+</section>
+{% else %}
+404
+{% endif %}
 {% endblock %}

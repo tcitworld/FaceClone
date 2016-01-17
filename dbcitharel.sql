@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Sam 16 Janvier 2016 à 20:29
+-- Généré le :  Dim 17 Janvier 2016 à 14:36
 -- Version du serveur :  10.1.10-MariaDB-log
 -- Version de PHP :  7.0.2
 
@@ -101,13 +101,16 @@ CREATE TABLE `COMMENT` (
 --
 
 INSERT INTO `COMMENT` (`idcomment`, `idmembre`, `idpost`, `contenucomment`, `datecommentaire`) VALUES
-(18, 29, 21, 'gh', '2016-01-14'),
 (19, 29, 14, 'tyreyr', '2016-01-14'),
 (20, 29, 29, 'hého', '2016-01-14'),
 (21, 29, 29, 'flûte', '2016-01-14'),
 (22, 29, 29, 'ça fait bcp de coms', '2016-01-14'),
 (23, 29, 29, 'trop même', '2016-01-14'),
-(24, 29, 29, 'on voit plus grand chose', '2016-01-14');
+(24, 29, 29, 'on voit plus grand chose', '2016-01-14'),
+(25, 31, 29, 'hey', '2016-01-17'),
+(26, 31, 29, 'ho', '2016-01-17'),
+(27, 31, 28, 'hum', '2016-01-17'),
+(28, 31, 29, 'enfin', '2016-01-17');
 
 -- --------------------------------------------------------
 
@@ -147,8 +150,8 @@ CREATE TABLE `LIKES` (
 --
 
 INSERT INTO `LIKES` (`idpost`, `idmembre`) VALUES
-(22, 32),
-(28, 32);
+(15, 29),
+(16, 29);
 
 -- --------------------------------------------------------
 
@@ -227,6 +230,7 @@ CREATE TABLE `NOTIFICATIONS` (
   `idmembre` int(11) NOT NULL,
   `action` varchar(255) NOT NULL,
   `autremembre` int(11) DEFAULT NULL,
+  `idpost` int(11) DEFAULT NULL,
   `readstatus` tinyint(1) NOT NULL,
   `datenotif` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -235,12 +239,9 @@ CREATE TABLE `NOTIFICATIONS` (
 -- Contenu de la table `NOTIFICATIONS`
 --
 
-INSERT INTO `NOTIFICATIONS` (`idnotif`, `idmembre`, `action`, `autremembre`, `readstatus`, `datenotif`) VALUES
-(1, 29, 'poke', 31, 0, '2016-01-08'),
-(2, 29, 'friendAsk', 31, 0, '2016-01-16'),
-(8, 29, 'friendReqAccept', 31, 0, '2016-01-16'),
-(9, 31, 'friendAsk', 29, 1, '2016-01-16'),
-(10, 29, 'friendReqAccept', 31, 0, '2016-01-16');
+INSERT INTO `NOTIFICATIONS` (`idnotif`, `idmembre`, `action`, `autremembre`, `idpost`, `readstatus`, `datenotif`) VALUES
+(24, 33, 'comment', 31, 28, 1, '2016-01-17'),
+(25, 29, 'comment', 31, 29, 0, '2016-01-17');
 
 -- --------------------------------------------------------
 
@@ -296,10 +297,7 @@ INSERT INTO `POST` (`idpost`, `idmembre`, `contenupost`, `datemessage`, `attachm
 (15, 29, 'msg2', '2015-12-24 03:15:50', NULL),
 (16, 31, 'hello world !', '2015-12-24 03:33:23', NULL),
 (17, 32, 'Un troisième citharel dit : coucou', '2015-12-26 02:00:35', NULL),
-(18, 29, '**coucou de Thomas**', '2015-12-26 04:12:49', NULL),
 (19, 29, ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque maximus nunc non ligula maximus accumsan. Nunc quis facilisis leo. Donec est neque, lacinia in facilisis eget, tincidunt nec nisl. Duis finibus in metus ut tempor. In volutpat ullamcorper mauris, eu mattis mi posuere id. Praesent congue ornare nibh vitae interdum. Integer vehicula risus eu felis tristique, nec egestas ex sagittis. Etiam blandit turpis sapien, ac ultrices magna congue fringilla. Maecenas ornare risus nisl. Proin convallis a risus id sollicitudin. Fusce vehicula non metus nec pretium. ', '2015-12-29 12:05:14', NULL),
-(21, 29, 'un autre', '2015-12-29 03:06:16', NULL),
-(22, 29, 'un bon', '2015-12-29 15:07:51', NULL),
 (28, 33, 'toto\r\n', '2015-12-29 15:25:02', NULL),
 (29, 29, 'J\'ai utilisé https://github.com/j0k3r/graby surtout', '2016-01-05 23:06:15', 'https://github.com/j0k3r/graby');
 
@@ -369,7 +367,8 @@ ALTER TABLE `MP`
 ALTER TABLE `NOTIFICATIONS`
   ADD PRIMARY KEY (`idnotif`),
   ADD KEY `idmembre` (`idmembre`),
-  ADD KEY `autremembre` (`autremembre`);
+  ADD KEY `autremembre` (`autremembre`),
+  ADD KEY `idpost` (`idpost`);
 
 --
 -- Index pour la table `PARTICIPENT`
@@ -400,7 +399,7 @@ ALTER TABLE `CARNET`
 -- AUTO_INCREMENT pour la table `COMMENT`
 --
 ALTER TABLE `COMMENT`
-  MODIFY `idcomment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `idcomment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 --
 -- AUTO_INCREMENT pour la table `CONVERSATIONS`
 --
@@ -420,7 +419,7 @@ ALTER TABLE `MP`
 -- AUTO_INCREMENT pour la table `NOTIFICATIONS`
 --
 ALTER TABLE `NOTIFICATIONS`
-  MODIFY `idnotif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idnotif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT pour la table `POST`
 --
@@ -442,14 +441,14 @@ ALTER TABLE `ASKFRIEND`
 --
 ALTER TABLE `COMMENT`
   ADD CONSTRAINT `FKCommentMembre` FOREIGN KEY (`idmembre`) REFERENCES `MEMBER` (`idmembre`),
-  ADD CONSTRAINT `FKCommentPost` FOREIGN KEY (`idpost`) REFERENCES `POST` (`idpost`);
+  ADD CONSTRAINT `FKCommentPost` FOREIGN KEY (`idpost`) REFERENCES `POST` (`idpost`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `LIKES`
 --
 ALTER TABLE `LIKES`
   ADD CONSTRAINT `FKLikeMember` FOREIGN KEY (`idmembre`) REFERENCES `MEMBER` (`idmembre`),
-  ADD CONSTRAINT `FKLikePost` FOREIGN KEY (`idpost`) REFERENCES `POST` (`idpost`);
+  ADD CONSTRAINT `FKLikePost` FOREIGN KEY (`idpost`) REFERENCES `POST` (`idpost`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `MP`
@@ -463,6 +462,7 @@ ALTER TABLE `MP`
 --
 ALTER TABLE `NOTIFICATIONS`
   ADD CONSTRAINT `FKNotifOtherUser` FOREIGN KEY (`autremembre`) REFERENCES `MEMBER` (`idmembre`),
+  ADD CONSTRAINT `FKNotifPost` FOREIGN KEY (`idpost`) REFERENCES `POST` (`idpost`) ON DELETE CASCADE,
   ADD CONSTRAINT `FKNotifUser` FOREIGN KEY (`idmembre`) REFERENCES `MEMBER` (`idmembre`);
 
 --
