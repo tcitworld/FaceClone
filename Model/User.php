@@ -66,6 +66,18 @@ class User {
 		return ($this->friends ? $this->friends : false); // if no friends, return false
 	}
 
+	public function getFriendsObj() {
+		$friends = $this->getFriends();
+		$friendsObj = array();
+		if ($friends) {
+			foreach ($friends as $friend) {
+				$friendsObj[] = new User($this->database->getMailForId($friend)[0]);
+			}
+		}
+		return $friendsObj;
+
+	}
+
 	public function getNumberOfFriends() {
 		return count($this->getFriends());
 	}

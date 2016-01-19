@@ -11,15 +11,25 @@
                   <p class="text-muted text-center">Software Engineer</p>
 
                   <ul class="list-group list-group-unbordered">
-                    <li class="list-group-item">
-                      <b>Amis</b> <a class="pull-right">{{ userpNumberOfFriends }}</a>
+                    <li class="list-group-item show-friends" {{ userp.FriendsObj | length > 0 ? 'style="cursor: pointer; cursor: hand;"' }}>
+                      <b>Amis</b> <a class="pull-right">{{ userp.FriendsObj | length }}</a>
+                      <ul class="users-list clearfix hidden">
+                        {% for friend in userp.FriendsObj | slice(0, 5) %}
+                          <li>
+                            <img alt="User Image" src="{{ friend.gravatar }}">
+                            <a href="profile.php?id={{ friend.id }}" style="color: #444;">
+                              {{ friend.prenom }} {{ friend.nom }}
+                            </a>
+                          </li>
+                        {% endfor %}
+                      </ul>
                     </li>
                     <li class="list-group-item">
                     	<b>Posts</b> <a class="pull-right">{{ userp.NumberOfPosts }}</a>
                     </li>
                   </ul>
 
-                  {#<a href="#" class="btn btn-primary btn-block"><b>Devenir un ami</b></a>#}
+                  <a href="#" class="btn btn-primary btn-block"><b>Devenir un ami</b></a>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
               <!-- About Me Box -->
@@ -57,30 +67,105 @@
               </div><!-- /.box -->
             </div><!-- /.col -->
             <div class="col-md-9">
-				{% for post in posts | reverse %}
-            	<!-- Post -->
-                    <div class="post clearfix">
-                      <div class='user-block'>
-                        <img class='img-circle img-bordered-sm' src='{{ userp.Gravatar }}' alt='user image'>
+				<div id="activity">
+        {% for post in posts | reverse %}
+          <div class="post" value="{{ post.id }}">
+            {% set narcisse = 0 %}
+            <div class="box-header with-border">
+              <div class='user-block'>
+                        <img class='img-circle img-bordered-sm' src='{{ post.user.Gravatar }}' alt='user image'>
                         <span class='username'>
-                          <a href="#">{{ userp.prenom }} {{ userp.nom }}</a>
-                          <a href='calls/deletepost.php?idpost={{ post.idpost }}' class='pull-right btn-box-tool'><i class='fa fa-times'></i></a>
+                          <a href="profile.php?id={{ post.user.id }}">{{ post.user.prenom }} {{ post.user.nom }}</a>
+                          {% if user.id == post.user.id %}
+                            <button value="{{ post.id }}" class='pull-right btn btn-box-tool delpost'><i class='fa fa-times'></i></button>
+                          {% endif %}
                         </span>
-                        <span class='description'>{{ post.datemessage }}</span>
+                        <span class='description'><a class="link-black text-sm" href="post.php?idpost={{post.id}}">{{ post.datemessage }}</a></span>
                       </div><!-- /.user-block -->
-                      <p>
-                        {{ post.contenupost | markdown }}
-                      </p>
-
-                      <ul class="list-inline">
-                        <li><a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Share</a></li>
-                        <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a></li>
-                        <li class="pull-right"><a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comments (5)</a></li>
-                      </ul>
-
-                      <input class="form-control input-sm" type="text" placeholder="Type a comment">
-                    </div><!-- /.post -->
-            	{% endfor %}
+                  </div>
+                    <div class="box-body">
+                    {{ post.contenupost | auto_link_text | markdown }}
+                    {% if post.attachment.url != null %}
+                      <div class="attachment-block clearfix">
+                        {% if post.attachment.picture != '' %}<img class="attachment-img" src="{{ post.attachment.picture }}">{% endif %}
+                        <div {{ post.attachment.picture != '' ? 'class="attachment-pushed"' }}>
+                          <h4 class="attachment-heading">
+                            <a href="{{ post.attachment.url }}">{{ post.attachment.title }}</a>
+                          </h4>
+                          <div class="attachment-text">
+                            {{ post.attachment.summary | raw }}
+                            <a href="{{ post.attachment.url }}">Lire la suite...</a>
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
+                      <button class="btn btn-default btn-xs like" value="{{ post.id }}"><i class="fa fa-thumbs-o-up"></i> Like</button>
+                      <span class="likers text-sm" value="{{ post.id }}">
+                    {% for like in post.likes | slice(0, 5) %}
+                      {% if like.id != user.id %}<a class="link-blue" href="profile.php?id={{ like.id }}">{% endif %}
+                      <span class="text-sm">
+                {% if like.id == user.id %}
+                  {% set narcisse = 1 %}
+                  Vous
+                {% else %}
+                        {{ like.prenom }} {{ like.nom }}
+                {% endif %}
+                </span>
+                      {% if like.id != user.id %}</a>{% endif %}
+                      {% if not loop.last and loop.revindex > 2 %}
+                        ,
+                      {% elseif loop.revindex == 2 %}
+                        et
+                       {% endif %}
+                    {% endfor %}
+                    <span class="text-sm">
+                      {% if narcisse == 1 %}
+                      aimez.
+                      {% else %}
+                        {% if post.likes | length == 1 %}aime.{% elseif post.likes | length > 1 %}aiment.{% endif %}
+                      {% endif %}
+                    </span>
+                    </span>
+                    <span class="pull-right text-muted"><span class="numberlikes">{{ post.likes | length }}</span> <i class="fa fa-thumbs-o-up"></i> - <span class="numbercoms">{{ post.comments | length }}</span> <i class="fa fa-commenting"></i></span>
+                    </div>
+            {% if post.comments is not empty %}
+                  <div class="box-footer box-comments">
+                    {% for comment in post.comments %}
+                    <div class="box-comment{{ loop.index > 3 ? ' hidden' }}">
+                      <img class="img-circle img-sm" src="{{ comment.membre.gravatar }}">
+                      <div class="comment-text">
+                        <span class="username"><a href="profile.php?id={{ comment.membre.id }}">{{ comment.membre.prenom }} {{ comment.membre.nom }}</a></span>
+                    <span class="text-muted pull-right">{{ comment.datecomment }}</span>
+                        </span>
+                        {{ comment.contenu | auto_link_text | markdown }}
+                      </div>
+                    </div>
+                    {% if post.comments | length > 3 and loop.revindex == 1 %}<a class="morecoms" href="">
+                      Afficher
+                      {% if (post.comments | length - 3) == 1 %} 
+                      un autre commentaire
+                      {% else %}
+                  {{ post.comments | length - 3 }} autres commentaires
+                {% endif %}
+              </a>
+                    {% else %}
+                    {% endif %}
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                  <div class="box-footer">
+                    <form action="calls/newcom.php" method="post" class="newcommentform">
+                        <img class="img-responsive img-circle img-sm" src="{{ user.gravatar }}" alt="alt text">
+                        <!-- .img-push is used to add margin to elements next to floating images -->
+                        <div class="img-push">
+                          <input class="form-control input-sm" placeholder="Appuyez sur entrée pour envoyer votre message" type="text" name="comment">
+                          <input type="hidden" name="idpost" class="hiddenidpost" value="{{ post.id }}">
+                        </div>
+                      </form>
+                  </div>
+                </div>
+        {% endfor %}
+        </div>
             </div>
 		</div>
 	</div>
