@@ -8,5 +8,7 @@ if (Tools::isLogged() && isset($_POST['idpost']) && isset($_POST['comment'])) {
 	$post = new Post($_POST['idpost']);
 	$database->addComment($_POST['idpost'],$user->getid(),$_POST['comment']);
 	$notifAction = 'comment';
-	$database->setNotification($post->getUser()->getid(),$notifAction,$user->getid(),$post->getid());
+	if ($post->getUser()->getid() != $user->getid()) {
+		$database->setNotification($post->getUser()->getid(),$notifAction,$user->getid(),$post->getid());
+	}
 }

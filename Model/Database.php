@@ -82,6 +82,23 @@ class Database {
 		return $donnees;
 	}
 
+
+	public function changeUserTrivialInformations($userid, $nom = NULL, $prenom = NULL, $email = NULL, $password = NULL, $education = NULL, $location = NULL, $skills = NULL, $job = NULL) {
+		$query = $this->connexion->prepare('UPDATE MEMBER SET nom = :nom, prenom = :prenom, mail = :email, password = :password, education = :education, location = :location, skills = :skills, job = :job WHERE idmembre = :userid');
+		$query->bindParam(':nom',$nom);
+		$query->bindParam(':prenom',$prenom);
+		$query->bindParam(':email',$email);
+		$query->bindParam(':password',$password);
+		
+		$query->bindParam(':education',$education);
+		$query->bindParam(':location',$location);
+		$query->bindParam(':skills',$skills);
+		$query->bindParam(':job',$job);
+		$query->bindParam(':userid',$userid);
+		$query->execute();
+	}
+
+
 	public function getAllPeople($userid) {
 		$query = $this->connexion->prepare('SELECT MEMBER.idmembre FROM MEMBER WHERE idmembre <> ?');
 		$query->execute(array($userid));

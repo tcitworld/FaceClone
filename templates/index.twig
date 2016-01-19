@@ -2,9 +2,7 @@
 {% block title %}Index{% endblock %}
 {% block content %}
 {% set narcisse = 0 %}
-		{% if not connected %}
-			{% include online ? '' : 'login.twig' %}
-		{% endif %}
+		
 	{% if connected %}
 	<section class="content-header">
 	<div class="row">

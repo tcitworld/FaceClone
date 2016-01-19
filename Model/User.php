@@ -13,6 +13,10 @@ class User {
     private $friends;
     private $database;
     private $conversations;
+    private $education;
+    private $location;
+    private $skills;
+    private $job;
 
 	function __construct($mail) {
 		$this->email = $mail;
@@ -25,6 +29,10 @@ class User {
 		$this->dateNaissance = $user['dateNaissance'];
 		$this->dateInscription = $user['dateInscription'];
 		$this->dateLastConnexion = $user['dateLastConnexion'];
+		$this->education = $user['education'];
+		$this->location = $user['location'];
+		$this->skills = $user['skills'];
+		$this->job = $user['job'];
 		$this->friends = json_decode($user['Friends'],true); // decode the list of friends in database to an array
 		$this->conversations = $this->database->getConversationsForUser($this->id);
 		$this->notifications = $this->database->getNotifications($this->id);
@@ -61,6 +69,23 @@ class User {
 	public function getDateLastConnexion() {
 		return $this->dateLastConnexion;
 	}
+
+	public function getEducation() {
+		return $this->education;
+	}
+
+	public function getLocation() {
+		return $this->location;
+	}
+
+	public function getSkills() {
+		return $this->skills;
+	}
+
+	public function getJob() {
+		return $this->job;
+	}
+
 
 	public function getFriends() {
 		return ($this->friends ? $this->friends : false); // if no friends, return false

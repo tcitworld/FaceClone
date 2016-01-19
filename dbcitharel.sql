@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Dim 17 Janvier 2016 à 14:36
+-- Généré le :  Mar 19 Janvier 2016 à 20:49
 -- Version du serveur :  10.1.10-MariaDB-log
 -- Version de PHP :  7.0.2
 
@@ -110,7 +110,9 @@ INSERT INTO `COMMENT` (`idcomment`, `idmembre`, `idpost`, `contenucomment`, `dat
 (25, 31, 29, 'hey', '2016-01-17'),
 (26, 31, 29, 'ho', '2016-01-17'),
 (27, 31, 28, 'hum', '2016-01-17'),
-(28, 31, 29, 'enfin', '2016-01-17');
+(28, 31, 29, 'enfin', '2016-01-17'),
+(29, 29, 29, 'la', '2016-01-19'),
+(30, 29, 29, 'you', '2016-01-19');
 
 -- --------------------------------------------------------
 
@@ -168,6 +170,10 @@ CREATE TABLE `MEMBER` (
   `password` varchar(255) DEFAULT NULL,
   `dateInscription` date DEFAULT NULL,
   `dateLastConnexion` date DEFAULT NULL,
+  `education` text,
+  `location` varchar(255) DEFAULT NULL,
+  `skills` text,
+  `job` varchar(255) DEFAULT NULL,
   `Friends` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -175,11 +181,11 @@ CREATE TABLE `MEMBER` (
 -- Contenu de la table `MEMBER`
 --
 
-INSERT INTO `MEMBER` (`idmembre`, `nom`, `prenom`, `mail`, `dateNaissance`, `password`, `dateInscription`, `dateLastConnexion`, `Friends`) VALUES
-(29, 'Citharel', 'Thomas', 'tcit@tcit.fr', '1994-05-04', '$2y$10$mxr8lbZoAmnlK7utzLm1FuTjyy6N8jbrvMxxjWqDrRL6Dtz9XlLj6', '2015-12-23', '2015-12-23', '["31"]'),
-(31, 'Citharel', 'Clément', 'clément@tcit.fr', '1994-05-04', '$2y$10$eVGbWR4dIwq.vfTzLLyxqe756ziH3DlBpPBRV0dpSTD1pqVdR8S1q', '2015-12-24', '2015-12-24', '{"1":"33","2":"32","3":"29"}'),
-(32, 'Citharel', 'Philippe', 'toto@titi.fr', '1994-05-04', '$2y$10$oNlal0JE0EBA6rVWDD0e5Oi81x1Ilm5p7iT3Z9nai3pkpeHgDENDi', '2015-12-24', '2015-12-24', '["29"]'),
-(33, 'Citharel', 'Maurice', 'momo@tcit.fr', '1932-06-11', '$2y$10$Fs.q1slHZWsLyztvA9eCaOuMFeE83RN/jZaJo6xseVaDYFdCkHWAO', '2015-12-29', '2015-12-29', '');
+INSERT INTO `MEMBER` (`idmembre`, `nom`, `prenom`, `mail`, `dateNaissance`, `password`, `dateInscription`, `dateLastConnexion`, `education`, `location`, `skills`, `job`, `Friends`) VALUES
+(29, 'Citharel', 'Thomas', 'tcit@tcit.fr', '1994-05-04', '$2y$10$PoADUUwh2LGTckWGLwDCFub0ZlJWVGnGlsYePTL8Qkk5VZZuaR9Eq', '2015-12-23', '2015-12-23', 'IUT d\'Orléans', 'Orléans', 'RAS', 'Surhomme', '["31"]'),
+(31, 'Citharel', 'Clément', 'clément@tcit.fr', '1994-05-04', '$2y$10$eVGbWR4dIwq.vfTzLLyxqe756ziH3DlBpPBRV0dpSTD1pqVdR8S1q', '2015-12-24', '2015-12-24', NULL, NULL, NULL, NULL, '{"1":"33","2":"32","3":"29"}'),
+(32, 'Citharel', 'Philippe', 'toto@titi.fr', '1994-05-04', '$2y$10$oNlal0JE0EBA6rVWDD0e5Oi81x1Ilm5p7iT3Z9nai3pkpeHgDENDi', '2015-12-24', '2015-12-24', NULL, NULL, NULL, NULL, '["29"]'),
+(33, 'Citharel', 'Maurice', 'momo@tcit.fr', '1932-06-11', '$2y$10$Fs.q1slHZWsLyztvA9eCaOuMFeE83RN/jZaJo6xseVaDYFdCkHWAO', '2015-12-29', '2015-12-29', NULL, NULL, NULL, NULL, '');
 
 -- --------------------------------------------------------
 
@@ -241,7 +247,8 @@ CREATE TABLE `NOTIFICATIONS` (
 
 INSERT INTO `NOTIFICATIONS` (`idnotif`, `idmembre`, `action`, `autremembre`, `idpost`, `readstatus`, `datenotif`) VALUES
 (24, 33, 'comment', 31, 28, 1, '2016-01-17'),
-(25, 29, 'comment', 31, 29, 0, '2016-01-17');
+(25, 29, 'comment', 31, 29, 0, '2016-01-17'),
+(26, 29, 'comment', 29, 29, 0, '2016-01-19');
 
 -- --------------------------------------------------------
 
@@ -399,7 +406,7 @@ ALTER TABLE `CARNET`
 -- AUTO_INCREMENT pour la table `COMMENT`
 --
 ALTER TABLE `COMMENT`
-  MODIFY `idcomment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `idcomment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
 -- AUTO_INCREMENT pour la table `CONVERSATIONS`
 --

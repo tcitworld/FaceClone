@@ -11,6 +11,8 @@ $database = new Database;
 // if the user reconnects, welcome him !
 $newsession = false;
 
+$callLogin = false;
+
 // empty array for our posts
 $posts = array();
 
@@ -23,6 +25,8 @@ if (Tools::isLogged()) {
 	$user = new User($_SESSION['login']);
 	$posts = getPosts($database,$user);
 	
+} else {
+	$callLogin = true;
 }
 
 /*
@@ -35,6 +39,7 @@ if (isset($_POST['login']) and isset($_POST['password'])) {
 	$user = $database->login($_POST['login'],$_POST['password']); // compare his password.
 	if ($user) { // if $user != false : user has correct password
 		$newsession = true;
+		$callLogin = false;
 		$_SESSION['login'] = $_POST['login']; // create session for this user
 		$posts = getPosts($database,$user); // get his posts
 	}
@@ -51,7 +56,7 @@ if(isset($_GET['logout']) || empty($_SESSION['login'])) {
 	session_destroy();
 	unset($_SESSION);
 	$user = NULL;
-
+	$callLogin = true;
 }
 
 /*
@@ -72,9 +77,13 @@ if (isset($_POST['msg']) && Tools::isLogged()) {
 
 */
 
-Tools::callTwig('index.twig',array('connected' => Tools::isLogged(),'user' => $user ,
-	'posts' => $posts,'newsession' => $newsession));
-
+if ($callLogin) {
+	Tools::callTwig('login.twig',array());
+} else {
+	if (Tools::isLogged()) {
+		Tools::callTwig('index.twig',array('connected' => Tools::isLogged(),'user' => $user ,'posts' => $posts,'newsession' => $newsession));
+	}
+}
 /*
 
 getPosts : Get array of Post objects for the current user

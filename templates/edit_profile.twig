@@ -1,0 +1,79 @@
+{% extends "base.twig" %}
+{% block title %}Éditer votre compte{% endblock %}
+{% block content %}
+<div class="register-box">
+<div class="register-logo">
+        <h1>Éditer votre compte</h1>
+</div>
+<div class="register-box-body">
+
+	{% if message != '' %}
+	<div class="alert alert-info alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+			<h4><i class="icon fa fa-info"></i> Succès !</h4>
+			{{ message }}
+		</div>
+	{% endif %}
+
+	<form action="edit_profile.php" method="post" accept-charset="utf-8">
+
+		<fieldset>
+			<legend>Informations personnelles</legend>
+			<div class="form-group has-feedback">
+				<input type="text" name="education" class="form-control" placeholder="Education">
+				<span class="fa fa-book form-control-feedback"></span>
+			</div>
+			<div class="form-group has-feedback">
+				<input type="text" class="form-control" name="location" placeholder="Location">
+				<span class="fa fa-map-marker form-control-feedback"></span>
+			</div>
+
+			<div class="form-group has-feedback">
+				<input type="text" class="form-control" name="skills" placeholder="Skills (separated by commas)">
+				<span class="fa fa-pencil form-control-feedback"></span>
+			</div>
+
+			<div class="form-group has-feedback">
+				<input type="text" class="form-control" name="job" placeholder="Métier">
+				<span class="fa fa-briefcase form-control-feedback"></span>
+			</div>
+		</fieldset>
+
+		<fieldset>
+			<legend>Paramètres du compte</legend>
+			<div class="form-group has-feedback">
+				<input type="email" name="email" class="form-control" placeholder="Email">
+				<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+			</div>
+			<div class="form-group has-feedback">
+				<input type="text" class="form-control" name="nom" placeholder="Nom">
+				<span class="glyphicon glyphicon-user form-control-feedback"></span>
+			</div>
+
+			<div class="form-group has-feedback">
+				<input type="text" class="form-control" name="prenom" placeholder="Prénom">
+				<span class="glyphicon glyphicon-user form-control-feedback"></span>
+			</div>
+
+			<div class="form-group has-feedback">
+				<input name="oldpwd" class="form-control" type="password" class="form-control" placeholder="Current password">
+	            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+			</div>
+
+			<div class="form-group has-feedback">
+				<input name="pwd" class="form-control" type="password" class="form-control" placeholder="New Password">
+	            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+			</div>
+		</fieldset>
+
+
+	<button class="btn btn-primary btn-block btn-flat" type="submit">Envoyer</button>
+</form>
+<a href="index.php">Retour au site</a>
+</div>
+<script src="templates/AdminLTE/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="templates/AdminLTE/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="templates/AdminLTE/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<script>
+</script>
+{% endblock %}
