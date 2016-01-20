@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Mar 19 Janvier 2016 à 20:49
+-- Généré le :  Mer 20 Janvier 2016 à 19:54
 -- Version du serveur :  10.1.10-MariaDB-log
 -- Version de PHP :  7.0.2
 
@@ -52,35 +52,6 @@ INSERT INTO `ATTACHMENT` (`url`, `title`, `summary`, `picture`) VALUES
 ('http://twig.sensiolabs.org/doc/filters/raw.html', 'raw - Documentation - Twig', 'The raw filter marks the value as being "safe", which means that in an environment with automatic escaping enabled this variable will not be escaped if raw is the last filter applied to it: {% autoescape %} {{ var|raw }} {# var won\'t be escaped #} {% endautoescape %} Note Be careful when using the &hellip;', NULL),
 ('http://www.lemouvementcommun.fr/les-communs-la-vrai-idee-revolutionnaire/', 'Le mouvement commun » « Les communs, la vrai idée révolutionnaire »', 'Pourtant mentionnés dans le code civil, ces biens dont « l’usage est commun à tous » auraient pu disparaître si la crise du système néo-libéral ne les avait remises au goût du jour. Biens communs, ou communs, voilà un concept nouveau, à l’intersection des sciences politiques et de l’économie. Un concept à la mode, qui génère moult &hellip;', 'http://www.lemouvementcommun.fr/wp-content/uploads/2015/12/MARIANNE_LOGO.png'),
 ('https://github.com/j0k3r/graby', 'j0k3r/graby', 'README.md Graby helps you extract article content from web pages. This is a fork of Full-Text RSS v3.3 from @fivefilters . Why this fork ? Full-Text RSS works great as a standalone application. But when you need to encapsulate it in your own library it\'s a mess. You need this kind of ugly thing: $article &hellip;', 'https://avatars1.githubusercontent.com/u/62333?v=3&s=400');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `CARNET`
---
-
-CREATE TABLE `CARNET` (
-  `ID` int(11) NOT NULL,
-  `NOM` varchar(30) DEFAULT NULL,
-  `PRENOM` varchar(30) DEFAULT NULL,
-  `NAISSANCE` date DEFAULT NULL,
-  `VILLE` varchar(30) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `CARNET`
---
-
-INSERT INTO `CARNET` (`ID`, `NOM`, `PRENOM`, `NAISSANCE`, `VILLE`) VALUES
-(1, 'SMITH', 'JOHN', '1980-12-17', 'ORLEANS'),
-(2, 'DURAND', 'JEAN', '1983-01-13', 'ORLEANS'),
-(3, 'GUDULE', 'JEANNE', '1967-11-06', 'TOURS'),
-(4, 'ZAPATA', 'EMILIO', '1956-12-01', 'ORLEANS'),
-(5, 'JOURDAIN', 'NICOLAS', '2000-09-10', 'TOURS'),
-(6, 'DUPUY', 'MARIE', '1986-01-11', 'BLOIS'),
-(7, 'ANDREAS', 'LOU', '1861-02-12', 'ST Petersbourg'),
-(9, 'Kafka', 'Franz', '1883-07-03', 'Prague'),
-(11, 'Dalton', 'Joe', '2003-12-06', 'Dallas');
 
 -- --------------------------------------------------------
 
@@ -306,7 +277,11 @@ INSERT INTO `POST` (`idpost`, `idmembre`, `contenupost`, `datemessage`, `attachm
 (17, 32, 'Un troisième citharel dit : coucou', '2015-12-26 02:00:35', NULL),
 (19, 29, ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque maximus nunc non ligula maximus accumsan. Nunc quis facilisis leo. Donec est neque, lacinia in facilisis eget, tincidunt nec nisl. Duis finibus in metus ut tempor. In volutpat ullamcorper mauris, eu mattis mi posuere id. Praesent congue ornare nibh vitae interdum. Integer vehicula risus eu felis tristique, nec egestas ex sagittis. Etiam blandit turpis sapien, ac ultrices magna congue fringilla. Maecenas ornare risus nisl. Proin convallis a risus id sollicitudin. Fusce vehicula non metus nec pretium. ', '2015-12-29 12:05:14', NULL),
 (28, 33, 'toto\r\n', '2015-12-29 15:25:02', NULL),
-(29, 29, 'J\'ai utilisé https://github.com/j0k3r/graby surtout', '2016-01-05 23:06:15', 'https://github.com/j0k3r/graby');
+(29, 29, 'J\'ai utilisé https://github.com/j0k3r/graby surtout', '2016-01-05 23:06:15', 'https://github.com/j0k3r/graby'),
+(30, 29, 'fdgfgsx', '2016-01-15 00:00:00', NULL),
+(31, 31, 'autre', '2016-01-09 00:00:00', NULL),
+(32, 29, 'encore des lignes pour la pagination', '2016-01-08 00:00:00', NULL),
+(33, 29, 'un autre post', '2016-01-04 00:00:00', NULL);
 
 --
 -- Index pour les tables exportées
@@ -325,12 +300,6 @@ ALTER TABLE `ASKFRIEND`
 ALTER TABLE `ATTACHMENT`
   ADD PRIMARY KEY (`url`),
   ADD KEY `url` (`url`);
-
---
--- Index pour la table `CARNET`
---
-ALTER TABLE `CARNET`
-  ADD PRIMARY KEY (`ID`);
 
 --
 -- Index pour la table `COMMENT`
@@ -398,11 +367,6 @@ ALTER TABLE `POST`
 --
 
 --
--- AUTO_INCREMENT pour la table `CARNET`
---
-ALTER TABLE `CARNET`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
---
 -- AUTO_INCREMENT pour la table `COMMENT`
 --
 ALTER TABLE `COMMENT`
@@ -431,7 +395,7 @@ ALTER TABLE `NOTIFICATIONS`
 -- AUTO_INCREMENT pour la table `POST`
 --
 ALTER TABLE `POST`
-  MODIFY `idpost` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `idpost` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- Contraintes pour les tables exportées
 --

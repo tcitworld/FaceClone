@@ -130,6 +130,11 @@
            		</div>
            	</div>
 		{% endfor %}
+		<div class="pagination">
+		{% if page-1 > 0 %}<a href="?page={{ page - 1 }}">Page précédente</a>{% endif %}
+		Page {{ page }} sur {{ pagecount-1 }}
+		{% if page +1 < pagecount %}<a href="?page={{ page + 1 }}">Page suivante</a>{% endif %}
+		</div>
 		</div>
 		{% else %}
 		<div class="callout callout-warning">

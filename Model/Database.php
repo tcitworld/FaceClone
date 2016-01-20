@@ -140,9 +140,20 @@ class Database {
 
 	}
 
-	public function getPostsForUser($userid) {
+	public function getNumberOfPostsForUser($userid) {
 		$query = $this->connexion->prepare('SELECT * FROM POST WHERE idmembre = ?');
 		$query->execute(array($userid));
+		return $query->rowCount();
+	}
+
+	public function getPostsForUser($userid,$offset,$itemsPerPage) {
+		$query = $this->connexion->prepare('SELECT * FROM POST WHERE idmembre = :idmembre LIMIT :limite OFFSET :offset');
+		$query->bindParam(':idmembre', $userid);
+		$itemsPerPage = (int) $itemsPerPage;
+		$offset = (int) $offset;
+		$query->bindParam(':limite',$itemsPerPage,PDO::PARAM_INT);
+		$query->bindParam(':offset',$offset,PDO::PARAM_INT);
+		$query->execute();
 		return $query->fetchAll();
 	}
 
